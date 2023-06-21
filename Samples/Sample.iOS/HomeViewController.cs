@@ -1,17 +1,16 @@
-using System;
 using MonoTouch.Dialog;
 
-using Foundation;
-using CoreGraphics;
+using System;
+using System.Collections.Generic;
+
 using UIKit;
 
 using ZXing;
 using ZXing.Mobile;
-using System.Collections.Generic;
 
 namespace Sample.iOS
 {
-	public class HomeViewController : DialogViewController
+    public class HomeViewController : DialogViewController
 	{
 		public HomeViewController() : base(UITableViewStyle.Grouped, new RootElement("ZXing.Net.Mobile"), false)
 		{
@@ -61,9 +60,6 @@ namespace Sample.iOS
 						//Create an instance of our custom overlay
 						customOverlay = new CustomOverlayView();
 						//Wireup the buttons from our custom overlay
-						customOverlay.ButtonTorch.TouchUpInside += delegate {
-							scanner.ToggleTorch();
-						};
 						customOverlay.ButtonCancel.TouchUpInside += delegate {
 							scanner.Cancel();
 						};

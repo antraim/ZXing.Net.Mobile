@@ -19,19 +19,10 @@ namespace ZXing.Mobile
 		void PlatformAutoFocus()
 			=> throw ex;
 
-		void PlatformTorch(bool on)
-			=> throw ex;
-
-		void PlatformToggleTorch()
-			=> throw ex;
-
 		void PlatformPauseAnalysis()
 			=> throw ex;
 
 		void PlatformResumeAnalysis()
-			=> throw ex;
-
-		bool PlatformIsTorchOn
 			=> throw ex;
 	}
 }

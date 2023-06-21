@@ -110,27 +110,12 @@ namespace ZXing.Mobile
 		public void ResumeAnalysis()
 			=> cameraAnalyzer.ResumeAnalysis();
 
-		public void Torch(bool on)
-		{
-			if (on)
-				cameraAnalyzer.Torch.TurnOn();
-			else
-				cameraAnalyzer.Torch.TurnOff();
-		}
-
-		public void ToggleTorch()
-			=> cameraAnalyzer.Torch.Toggle();
-
 		public MobileBarcodeScanningOptions ScanningOptions { get; set; }
-
-		public bool IsTorchOn => cameraAnalyzer.Torch.IsEnabled;
 
 		public bool IsAnalyzing => cameraAnalyzer.IsAnalyzing;
 
 		CameraAnalyzer cameraAnalyzer;
 		bool surfaceCreated;
-
-		public bool HasTorch => cameraAnalyzer.Torch.IsSupported;
 
 		protected override void OnAttachedToWindow()
 		{

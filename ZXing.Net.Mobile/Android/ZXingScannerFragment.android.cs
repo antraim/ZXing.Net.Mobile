@@ -109,9 +109,6 @@ namespace ZXing.Mobile
 		ZXingSurfaceView scanner;
 		ZxingOverlayView zxingOverlay;
 
-		public void Torch(bool on)
-			=> scanner?.Torch(on);
-
 		public void AutoFocus()
 			=> scanner?.AutoFocus();
 
@@ -143,16 +140,7 @@ namespace ZXing.Mobile
 		public void ResumeAnalysis()
 			=> scanner?.ResumeAnalysis();
 
-		public void ToggleTorch()
-			=> scanner?.ToggleTorch();
-
-		public bool IsTorchOn
-			=> scanner?.IsTorchOn ?? false;
-
 		public bool IsAnalyzing
 			=> scanner?.IsAnalyzing ?? false;
-
-		public bool HasTorch
-			=> scanner?.HasTorch ?? false;
 	}
 }

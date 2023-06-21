@@ -14,24 +14,19 @@ namespace ZXing.Mobile
 	public class ZxingActivity : FragmentActivity
 	{
 		public static readonly string[] RequiredPermissions = new[] {
-			Android.Manifest.Permission.Camera,
-			Android.Manifest.Permission.Flashlight
+			Android.Manifest.Permission.Camera
 		};
 
 		public static Action<ZXing.Result> ScanCompletedHandler;
 		public static Action CanceledHandler;
 
 		public static Action CancelRequestedHandler;
-		public static Action<bool> TorchRequestedHandler;
 		public static Action AutoFocusRequestedHandler;
 		public static Action PauseAnalysisHandler;
 		public static Action ResumeAnalysisHandler;
 
 		public static void RequestCancel()
 			=> CancelRequestedHandler?.Invoke();
-
-		public static void RequestTorch(bool torchOn)
-			=> TorchRequestedHandler?.Invoke(torchOn);
 
 		public static void RequestAutoFocus()
 			=> AutoFocusRequestedHandler?.Invoke();
@@ -82,7 +77,6 @@ namespace ZXing.Mobile
 
 			CancelRequestedHandler = CancelScan;
 			AutoFocusRequestedHandler = AutoFocus;
-			TorchRequestedHandler = SetTorch;
 			PauseAnalysisHandler = scannerFragment.PauseAnalysis;
 			ResumeAnalysisHandler = scannerFragment.ResumeAnalysis;
 		}
@@ -115,9 +109,6 @@ namespace ZXing.Mobile
 
 			Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "Configuration Changed");
 		}
-
-		public void SetTorch(bool on)
-			=> scannerFragment.Torch(on);
 
 		public void AutoFocus()
 			=> scannerFragment.AutoFocus();

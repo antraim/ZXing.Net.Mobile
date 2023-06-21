@@ -13,7 +13,7 @@ namespace ZXing.Mobile
 	{
 		public ZXingDefaultOverlayView(CGRect frame, string topText,
 										string bottomText, string cancelText, string flashText,
-										Action onCancel, Action onTorch) : base(frame)
+										Action onCancel) : base(frame)
 		{
 			this.cancelText = cancelText ?? "Cancel";
 			this.flashText = flashText ?? "Flash";
@@ -21,7 +21,6 @@ namespace ZXing.Mobile
 			this.bottomText = bottomText ?? "";
 
 			this.onCancel = onCancel;
-			this.onTorch = onTorch;
 			Initialize();
 		}
 
@@ -31,7 +30,6 @@ namespace ZXing.Mobile
 		readonly string bottomText;
 
 		readonly Action onCancel;
-		readonly Action onTorch;
 
 		UIView topBg;
 		UIView bottomBg;
@@ -117,11 +115,6 @@ namespace ZXing.Mobile
 
 			var captureDevice = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
 
-			var hasTorch = false;
-
-			if (captureDevice != null)
-				hasTorch = captureDevice.TorchAvailable;
-
 			InvokeOnMainThread(delegate
 			{
 				// Setting tool bar
@@ -130,13 +123,6 @@ namespace ZXing.Mobile
 				var buttons = new List<UIBarButtonItem>();
 				buttons.Add(new UIBarButtonItem(cancelText, UIBarButtonItemStyle.Done,
 												delegate { onCancel(); }));
-
-				if (hasTorch)
-				{
-					buttons.Add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace));
-					buttons.Add(new UIBarButtonItem(flashText, UIBarButtonItemStyle.Done,
-													delegate { onTorch(); }));
-				}
 
 				toolBar.Items = buttons.ToArray();
 

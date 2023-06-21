@@ -1,16 +1,18 @@
+using System;
 using System.Collections.Generic;
+
 using Android.App;
 using Android.Content.PM;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
+
 using ZXing;
 using ZXing.Mobile;
-using System;
 
 namespace Sample.Android
 {
-	[Activity(Label = "ZXing.Net.Mobile", MainLauncher = true, Theme = "@style/Theme.AppCompat.Light", ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden)]
+    [Activity(Label = "ZXing.Net.Mobile", MainLauncher = true, Theme = "@style/Theme.AppCompat.Light", ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden)]
 	public class Activity1 : AndroidX.AppCompat.App.AppCompatActivity
 	{
 		Button buttonScanCustomView;
@@ -67,7 +69,6 @@ namespace Sample.Android
 				scanner.ScanContinuously(opt, HandleScanResult);
 			};
 
-			Button flashButton;
 			View zxingOverlay;
 
 			buttonScanCustomView = this.FindViewById<Button>(Resource.Id.buttonScanCustomView);
@@ -79,10 +80,6 @@ namespace Sample.Android
 
 				//Inflate our custom overlay from a resource layout
 				zxingOverlay = LayoutInflater.FromContext(this).Inflate(Resource.Layout.ZxingOverlay, null);
-
-				//Find the button from our resource layout and wire up the click event
-				flashButton = zxingOverlay.FindViewById<Button>(Resource.Id.buttonZxingFlash);
-				flashButton.Click += (sender, e) => scanner.ToggleTorch();
 
 				//Set our custom overlay
 				scanner.CustomOverlay = zxingOverlay;
@@ -166,5 +163,3 @@ namespace Sample.Android
 		}
 	}
 }
-
-

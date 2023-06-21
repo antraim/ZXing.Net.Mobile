@@ -22,12 +22,9 @@ namespace ZXing.Mobile.CameraAccess
 			this.scannerHost = scannerHost;
 			cameraEventListener = new CameraEventsListener();
 			cameraController = new CameraController(surfaceView, cameraEventListener, scannerHost);
-			Torch = new Torch(cameraController, surfaceView.Context);
 		}
 
 		public Action<Result> BarcodeFound;
-
-		public Torch Torch { get; }
 
 		public bool IsAnalyzing { get; private set; }
 

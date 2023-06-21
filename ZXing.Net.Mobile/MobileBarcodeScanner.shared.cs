@@ -17,19 +17,10 @@ namespace ZXing.Mobile
 		public override void AutoFocus()
 			=> PlatformAutoFocus();
 
-		public override void Torch(bool on)
-			=> PlatformTorch(on);
-
-		public override void ToggleTorch()
-			=> PlatformToggleTorch();
-
 		public override void PauseAnalysis()
 			=> PlatformPauseAnalysis();
 
 		public override void ResumeAnalysis()
 			=> PlatformResumeAnalysis();
-
-		public override bool IsTorchOn
-			=> PlatformIsTorchOn;
 	}
 }

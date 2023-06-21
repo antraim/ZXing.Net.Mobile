@@ -21,8 +21,6 @@ namespace ZXing.Mobile
 
 		public Android.Views.View CustomOverlay { get; set; }
 
-		bool torch = false;
-
 		Context GetContext(Context context)
 			=> Xamarin.Essentials.Platform.CurrentActivity ?? Xamarin.Essentials.Platform.AppContext;
 
@@ -98,23 +96,11 @@ namespace ZXing.Mobile
 		internal void PlatformAutoFocus()
 			=> ZxingActivity.RequestAutoFocus();
 
-		internal void PlatformTorch(bool on)
-		{
-			torch = on;
-			ZxingActivity.RequestTorch(on);
-		}
-
-		internal void PlatformToggleTorch()
-			=> Torch(!torch);
-
 		internal void PlatformPauseAnalysis()
 			=> ZxingActivity.RequestPauseAnalysis();
 
 		internal void PlatformResumeAnalysis()
 			=> ZxingActivity.RequestResumeAnalysis();
-
-		internal bool PlatformIsTorchOn
-			=> torch;
 
 		internal static void LogDebug(string format, params object[] args)
 			=> Android.Util.Log.Debug("ZXING", format, args);

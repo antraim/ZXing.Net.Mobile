@@ -3,7 +3,6 @@
 	<uses-sdk android:targetSdkVersion="29" android:minSdkVersion="21" />
 	<application android:icon="@drawable/launcher" android:label="ZXing.Net.Mobile"></application>
 	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.FLASHLIGHT" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -62,7 +62,7 @@ namespace ZXing.Mobile
 			{
 				overlayView = new ZXingDefaultOverlayView(new CGRect(0, 0, this.Frame.Width, this.Frame.Height),
 					TopText, BottomText, CancelButtonText, FlashButtonText,
-					() => OnCancelButtonPressed?.Invoke(), ToggleTorch);
+					() => OnCancelButtonPressed?.Invoke());
 			}
 
 			if (overlayView != null)
@@ -72,8 +72,6 @@ namespace ZXing.Mobile
 			}
 		}
 
-
-		bool torch = false;
 		bool analyzing = true;
 		DateTime lastAnalysis = DateTime.UtcNow.AddYears(-99);
 		bool wasScanned = false;
@@ -433,42 +431,6 @@ namespace ZXing.Mobile
 		public void ResumeAnalysis()
 			=> analyzing = true;
 
-		public void Torch(bool on)
-		{
-			try
-			{
-				var device = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-				if (device.HasFlash || device.HasTorch)
-				{
-					device.LockForConfiguration(out var err);
-
-					if (on)
-					{
-						if (device.HasTorch)
-							device.TorchMode = AVCaptureTorchMode.On;
-						if (device.HasFlash)
-							device.FlashMode = AVCaptureFlashMode.On;
-					}
-					else
-					{
-						if (device.HasTorch)
-							device.TorchMode = AVCaptureTorchMode.Off;
-						if (device.HasFlash)
-							device.FlashMode = AVCaptureFlashMode.Off;
-					}
-
-					device.UnlockForConfiguration();
-				}
-				device = null;
-
-				torch = on;
-			}
-			catch { }
-		}
-
-		public void ToggleTorch()
-			=> Torch(!IsTorchOn);
-
 		public void AutoFocus()
 		{
 			//Doesn't do much on iOS :(
@@ -486,22 +448,7 @@ namespace ZXing.Mobile
 		public UIView CustomOverlayView { get; set; }
 		public bool UseCustomOverlayView { get; set; }
 		public bool IsAnalyzing => analyzing;
-		public bool IsTorchOn => torch;
 
-		bool? hasTorch = null;
-
-		public bool HasTorch
-		{
-			get
-			{
-				if (hasTorch.HasValue)
-					return hasTorch.Value;
-
-				var device = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-				hasTorch = device.HasFlash || device.HasTorch;
-				return hasTorch.Value;
-			}
-		}
 		#endregion
 
 		public static bool SupportsAllRequestedBarcodeFormats(IEnumerable<BarcodeFormat> formats)

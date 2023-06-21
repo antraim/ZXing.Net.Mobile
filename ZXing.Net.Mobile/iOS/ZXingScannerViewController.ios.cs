@@ -87,20 +87,11 @@ namespace ZXing.Mobile
 			}
 		}
 
-		public void Torch(bool on)
-			=> scannerView?.Torch(on);
-
-		public void ToggleTorch()
-			=> scannerView?.ToggleTorch();
-
 		public void PauseAnalysis()
 			=> scannerView?.PauseAnalysis();
 
 		public void ResumeAnalysis()
 			=> scannerView?.ResumeAnalysis();
-
-		public bool IsTorchOn
-			=> scannerView?.IsTorchOn ?? false;
 
 		public override void ViewDidAppear(bool animated)
 		{

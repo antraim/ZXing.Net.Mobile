@@ -21,9 +21,7 @@ namespace ZXing.Mobile
 
 		void Cancel();
 
-		void Torch(bool on);
 		void AutoFocus();
-		void ToggleTorch();
 
 		void PauseAnalysis();
 		void ResumeAnalysis();
@@ -35,8 +33,6 @@ namespace ZXing.Mobile
 		string CancelButtonText { get; set; }
 		string FlashButtonText { get; set; }
 		string CameraUnsupportedMessage { get; set; }
-
-		bool IsTorchOn { get; }
 	}
 
 	public abstract class MobileBarcodeScannerBase : IMobileBarcodeScanner
@@ -66,12 +62,6 @@ namespace ZXing.Mobile
 		public abstract void ScanContinuously(MobileBarcodeScanningOptions options, Action<Result> scanHandler);
 
 		public abstract void Cancel();
-
-		public abstract void Torch(bool on);
-
-		public abstract void ToggleTorch();
-
-		public abstract bool IsTorchOn { get; }
 
 		public abstract void AutoFocus();
 

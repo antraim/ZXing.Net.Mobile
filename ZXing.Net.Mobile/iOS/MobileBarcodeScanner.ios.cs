@@ -184,12 +184,6 @@ namespace ZXing.Mobile
 			scanResultResetEvent.Set();
 		}
 
-		void PlatformTorch(bool on)
-			=> viewController?.Torch(on);
-
-		void PlatformToggleTorch()
-			=> viewController?.ToggleTorch();
-
 		void PlatformAutoFocus()
 		{
 			//Does nothing on iOS
@@ -200,9 +194,6 @@ namespace ZXing.Mobile
 
 		void PlatformResumeAnalysis()
 			=> viewController?.ResumeAnalysis();
-
-		bool PlatformIsTorchOn
-			=> viewController.IsTorchOn;
 
 		public UIView CustomOverlay { get; set; }
 	}

@@ -80,7 +80,7 @@ namespace ZXing.Mobile
 						var evt = OnCancelButtonPressed;
 						if (evt != null)
 							evt();
-					}, ToggleTorch);
+					});
 			}
 
 			if (overlayView != null)
@@ -93,8 +93,6 @@ namespace ZXing.Mobile
 			Console.WriteLine("ZXingScannerView.Setup() took {0} ms.", total.TotalMilliseconds);
 		}
 
-
-		bool torch = false;
 		bool analyzing = true;
 
 		bool SetupCaptureSession()
@@ -288,8 +286,6 @@ namespace ZXing.Mobile
 
 				if (captureDevice.HasFlash)
 					captureDeviceOriginalConfig.FlashMode = captureDevice.FlashMode;
-				if (captureDevice.HasTorch)
-					captureDeviceOriginalConfig.TorchMode = captureDevice.TorchMode;
 				if (captureDevice.FocusPointOfInterestSupported)
 					captureDeviceOriginalConfig.FocusPointOfInterest = captureDevice.FocusPointOfInterest;
 				if (captureDevice.ExposurePointOfInterestSupported)
@@ -580,8 +576,6 @@ namespace ZXing.Mobile
 
 				if (captureDevice.HasFlash)
 					captureDevice.FlashMode = captureDeviceOriginalConfig.FlashMode;
-				if (captureDevice.HasTorch)
-					captureDevice.TorchMode = captureDeviceOriginalConfig.TorchMode;
 
 				captureDevice.UnlockForConfiguration();
 			}
@@ -614,48 +608,6 @@ namespace ZXing.Mobile
 		public void ResumeAnalysis()
 			=> analyzing = true;
 
-		public void Torch(bool on)
-		{
-			try
-			{
-				var device = captureDevice ?? AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-				if (device != null && (device.HasTorch || device.HasFlash))
-				{
-					device.LockForConfiguration(out var err);
-
-					if (err != null)
-					{
-						if (on)
-						{
-							if (device.HasTorch)
-								device.TorchMode = AVCaptureTorchMode.On;
-							if (device.HasFlash)
-								device.FlashMode = AVCaptureFlashMode.On;
-						}
-						else
-						{
-							if (device.HasTorch)
-								device.TorchMode = AVCaptureTorchMode.Off;
-							if (device.HasFlash)
-								device.FlashMode = AVCaptureFlashMode.Off;
-						}
-					}
-
-					try
-					{
-						device.UnlockForConfiguration();
-					}
-					catch { }
-				}
-
-				torch = on;
-			}
-			catch { }
-		}
-
-		public void ToggleTorch()
-			=> Torch(!IsTorchOn);
-
 		public void AutoFocus()
 		{
 			//Doesn't do much on iOS :(
@@ -673,21 +625,7 @@ namespace ZXing.Mobile
 		public UIView CustomOverlayView { get; set; }
 		public bool UseCustomOverlayView { get; set; }
 		public bool IsAnalyzing { get { return analyzing; } }
-		public bool IsTorchOn { get { return torch; } }
 
-		bool? hasTorch = null;
-		public bool HasTorch
-		{
-			get
-			{
-				if (hasTorch.HasValue)
-					return hasTorch.Value;
-
-				var device = captureDevice ?? AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-				hasTorch = device.HasFlash || device.HasTorch;
-				return hasTorch.Value;
-			}
-		}
 		#endregion
 	}
 
@@ -700,6 +638,5 @@ namespace ZXing.Mobile
 		public CGPoint FocusPointOfInterest;
 		public CGPoint ExposurePointOfInterest;
 		public AVCaptureFlashMode FlashMode;
-		public AVCaptureTorchMode TorchMode;
 	}
 }

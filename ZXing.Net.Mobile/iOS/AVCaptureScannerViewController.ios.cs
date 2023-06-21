@@ -75,15 +75,6 @@ namespace ZXing.Mobile
 			View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 		}
 
-		public void Torch(bool on)
-			=> scannerView?.Torch(on);
-
-		public void ToggleTorch()
-			=> scannerView?.ToggleTorch();
-
-		public bool IsTorchOn
-			=> scannerView?.IsTorchOn ?? false;
-
 		public void PauseAnalysis()
 			=> scannerView?.PauseAnalysis();
 
