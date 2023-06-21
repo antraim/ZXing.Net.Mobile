@@ -1,11 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using CoreVideo;
-using ZXing;
-
-namespace ZXing.Mobile
+﻿namespace ZXing.Mobile
 {
-	public class CVPixelBufferBGRA32LuminanceSource : BaseLuminanceSource
+    public class CVPixelBufferBGRA32LuminanceSource : BaseLuminanceSource
 	{
 		public unsafe CVPixelBufferBGRA32LuminanceSource(byte* cvPixelByteArray, int cvPixelByteArrayLength, int width, int height)
 			: base(width, height) => CalculateLuminance(cvPixelByteArray, cvPixelByteArrayLength);

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace ZXing.Mobile
 {
-	public class PerformanceCounter
+    public class PerformanceCounter
 	{
 		static Dictionary<string, Stopwatch> counters = new Dictionary<string, Stopwatch>();
 

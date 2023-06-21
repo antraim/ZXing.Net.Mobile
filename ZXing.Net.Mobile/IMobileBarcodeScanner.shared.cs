@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using ZXing;
 
 namespace ZXing.Mobile
 {
-	public interface IZXingScanner<TOverlayViewType> : IScannerView
+    public interface IZXingScanner<TOverlayViewType> : IScannerView
 	{
 		TOverlayViewType CustomOverlayView { get; set; }
 		bool UseCustomOverlayView { get; set; }

@@ -2,13 +2,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Foundation;
-using CoreFoundation;
 using UIKit;
 
 namespace ZXing.Mobile
 {
-	public partial class MobileBarcodeScanner : MobileBarcodeScannerBase
+    public partial class MobileBarcodeScanner : MobileBarcodeScannerBase
 	{
 		IScannerViewController viewController;
 		readonly WeakReference<UIViewController> weakAppController;

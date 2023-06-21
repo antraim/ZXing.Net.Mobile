@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Android.Views;
+
 using ApxLabs.FastAndroidCamera;
 
 namespace ZXing.Mobile.CameraAccess
 {
-	public class CameraAnalyzer
+    public class CameraAnalyzer
 	{
 		readonly CameraController cameraController;
 		readonly CameraEventsListener cameraEventListener;

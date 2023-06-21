@@ -1,13 +1,12 @@
 using System;
 using System.Threading.Tasks;
+
 using Android.Content;
-using ZXing;
-using Android.OS;
 
 namespace ZXing.Mobile
 {
 
-	public partial class MobileBarcodeScanner : MobileBarcodeScannerBase
+    public partial class MobileBarcodeScanner : MobileBarcodeScannerBase
 	{
 		public const string TAG = "ZXing.Net.Mobile";
 

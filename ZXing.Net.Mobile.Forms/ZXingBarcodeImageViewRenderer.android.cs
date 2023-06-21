@@ -1,18 +1,21 @@
 ﻿using System;
+using System.ComponentModel;
+
+using Android.Graphics;
+using Android.Runtime;
+using Android.Widget;
+
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+
+using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
 using ZXing.Net.Mobile.Forms.Android;
-using Android.Runtime;
-using Xamarin.Forms.Platform.Android;
-using System.ComponentModel;
-using Android.Widget;
-using ZXing.Mobile;
-using Android.Graphics;
 
 [assembly: ExportRenderer(typeof(ZXingBarcodeImageView), typeof(ZXingBarcodeImageViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.Android
 {
-	[Preserve(AllMembers = true)]
+    [Preserve(AllMembers = true)]
 	public class ZXingBarcodeImageViewRenderer : ViewRenderer<ZXingBarcodeImageView, ImageView>
 	{
 		public ZXingBarcodeImageViewRenderer(global::Android.Content.Context context) : base(context)

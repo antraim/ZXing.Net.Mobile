@@ -1,12 +1,12 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+
+using CoreGraphics;
 
 using UIKit;
-using CoreGraphics;
 
 namespace ZXing.Mobile
 {
-	public class RGBLuminanceSourceiOS : RGBLuminanceSource
+    public class RGBLuminanceSourceiOS : RGBLuminanceSource
 	{
 		public RGBLuminanceSourceiOS(UIImage d)
 			: base((int)d.CGImage.Width, (int)d.CGImage.Height)
@@ -40,4 +40,3 @@ namespace ZXing.Mobile
 		}
 	}
 }
-

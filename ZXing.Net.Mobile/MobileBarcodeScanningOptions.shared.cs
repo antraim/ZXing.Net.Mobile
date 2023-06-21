@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ZXing;
 
 namespace ZXing.Mobile
 {
-	public class MobileBarcodeScanningOptions
+    public class MobileBarcodeScanningOptions
 	{
 		/// <summary>
 		/// Camera resolution selector delegate, must return the selected Resolution from the list of available resolutions

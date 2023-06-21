@@ -1,12 +1,14 @@
 using System;
+
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+
 using AndroidX.Fragment.App;
 
 namespace ZXing.Mobile
 {
-	public class ZXingScannerFragment : Fragment, IZXingScanner<View>, IScannerView
+    public class ZXingScannerFragment : Fragment, IZXingScanner<View>, IScannerView
 	{
 		public ZXingScannerFragment()
 		{

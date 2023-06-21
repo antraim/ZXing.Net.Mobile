@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using ZXing.Mobile;
-using System.Linq;
-using Android.App;
 using System.Threading.Tasks;
+
+using Android.App;
 using Android.Content.PM;
-using Android.Content;
+
 using Xamarin.Essentials;
 
 namespace ZXing.Net.Mobile.Android
 {
-	public static class PermissionsHandler
+    public static class PermissionsHandler
 	{
 		[Obsolete("Use Xamarin.Essentials.Platform.OnRequestPermissionsResult instead.")]
 		public static void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)

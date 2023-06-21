@@ -1,22 +1,22 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+
+using Android.App;
+using Android.Runtime;
+using Android.Views;
+
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+
+using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
 using ZXing.Net.Mobile.Forms.Android;
-using Android.Runtime;
-using Android.App;
-using Xamarin.Forms.Platform.Android;
-using Android.Views;
-using System.ComponentModel;
-using System.Reflection;
-using Android.Widget;
-using ZXing.Mobile;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
 
 [assembly: ExportRenderer(typeof(ZXingScannerView), typeof(ZXingScannerViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.Android
 {
-	[Preserve(AllMembers = true)]
+    [Preserve(AllMembers = true)]
 	public class ZXingScannerViewRenderer : ViewRenderer<ZXingScannerView, ZXing.Mobile.ZXingSurfaceView>
 	{
 		public ZXingScannerViewRenderer(global::Android.Content.Context context)
@@ -139,4 +139,3 @@ namespace ZXing.Net.Mobile.Forms.Android
 		}
 	}
 }
-

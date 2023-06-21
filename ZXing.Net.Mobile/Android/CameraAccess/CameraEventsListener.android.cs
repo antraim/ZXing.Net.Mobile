@@ -1,10 +1,12 @@
 ﻿using System;
+
 using Android.Hardware;
+
 using ApxLabs.FastAndroidCamera;
 
 namespace ZXing.Mobile.CameraAccess
 {
-	public class CameraEventsListener : Java.Lang.Object, INonMarshalingPreviewCallback, Camera.IAutoFocusCallback
+    public class CameraEventsListener : Java.Lang.Object, INonMarshalingPreviewCallback, Camera.IAutoFocusCallback
 	{
 		public event EventHandler<FastJavaByteArray> OnPreviewFrameReady;
 

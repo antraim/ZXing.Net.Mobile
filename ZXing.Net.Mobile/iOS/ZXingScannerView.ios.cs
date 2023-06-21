@@ -1,25 +1,28 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+
+using AVFoundation;
+
+using CoreFoundation;
+
+using CoreGraphics;
+
+using CoreMedia;
+
+using CoreVideo;
 
 using Foundation;
-using CoreFoundation;
-using AVFoundation;
-using CoreGraphics;
-using CoreMedia;
-using CoreVideo;
-using ObjCRuntime;
-using UIKit;
 
-using ZXing.Common;
-using ZXing.Mobile;
+using ObjCRuntime;
+
+using UIKit;
 
 namespace ZXing.Mobile
 {
-	public class ZXingScannerView : UIView, IZXingScanner<UIView>, IScannerSessionHost
+    public class ZXingScannerView : UIView, IZXingScanner<UIView>, IScannerSessionHost
 	{
 		public delegate void ScannerSetupCompleteDelegate();
 		public event ScannerSetupCompleteDelegate OnScannerSetupComplete;

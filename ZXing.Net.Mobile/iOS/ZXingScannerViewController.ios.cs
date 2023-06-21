@@ -1,18 +1,13 @@
 using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using UIKit;
-using Foundation;
-using AVFoundation;
 using CoreGraphics;
 
-using ZXing;
+using UIKit;
 
 namespace ZXing.Mobile
 {
-	public class ZXingScannerViewController : UIViewController, IScannerViewController
+    public class ZXingScannerViewController : UIViewController, IScannerViewController
 	{
 		ZXingScannerView scannerView;
 

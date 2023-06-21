@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows.Input;
+
 using Xamarin.Forms;
+
 using ZXing.Mobile;
 
 namespace ZXing.Net.Mobile.Forms
 {
-	public class ZXingScannerView : View
+    public class ZXingScannerView : View
 	{
 		public delegate void ScanResultDelegate(Result result);
 		public event ScanResultDelegate OnScanResult;

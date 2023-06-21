@@ -1,8 +1,7 @@
-﻿using System;
-namespace ZXing.Mobile
+﻿namespace ZXing.Mobile
 {
-	public interface IScannerSessionHost
+    public interface IScannerSessionHost
 	{
-		ZXing.Mobile.MobileBarcodeScanningOptions ScanningOptions { get; }
+		MobileBarcodeScanningOptions ScanningOptions { get; }
 	}
 }

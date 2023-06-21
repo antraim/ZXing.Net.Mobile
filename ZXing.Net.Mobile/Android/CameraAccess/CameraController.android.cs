@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Android.Content;
 using Android.Graphics;
 using Android.Hardware;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+
 using ApxLabs.FastAndroidCamera;
+
 using Camera = Android.Hardware.Camera;
 
 namespace ZXing.Mobile.CameraAccess
 {
-	public class CameraController
+    public class CameraController
 	{
 		readonly Context context;
 		readonly ISurfaceHolder holder;

@@ -1,24 +1,22 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
+
+using AVFoundation;
+
+using CoreFoundation;
+
+using CoreGraphics;
 
 using Foundation;
-using AVFoundation;
-using CoreFoundation;
-using CoreGraphics;
-using CoreMedia;
-using CoreVideo;
-using ObjCRuntime;
-using UIKit;
 
-using ZXing.Common;
-using ZXing.Mobile;
+using ObjCRuntime;
+
+using UIKit;
 
 namespace ZXing.Mobile
 {
-	public class AVCaptureScannerView : UIView, IZXingScanner<UIView>, IScannerSessionHost
+    public class AVCaptureScannerView : UIView, IZXingScanner<UIView>, IScannerSessionHost
 	{
 		public AVCaptureScannerView()
 		{
@@ -629,4 +627,3 @@ namespace ZXing.Mobile
 		}
 	}
 }
-

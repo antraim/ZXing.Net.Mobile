@@ -1,16 +1,13 @@
-﻿using System;
-using ZXing.Rendering;
+﻿using CoreGraphics;
 
-using Foundation;
-using CoreFoundation;
-using CoreGraphics;
 using UIKit;
 
 using ZXing.Common;
+using ZXing.Rendering;
 
 namespace ZXing.Mobile
 {
-	public class BitmapRenderer : IBarcodeRenderer<UIImage>
+    public class BitmapRenderer : IBarcodeRenderer<UIImage>
 	{
 		public UIImage Render(BitMatrix matrix, BarcodeFormat format, string content)
 			=> Render(matrix, format, content, new EncodingOptions());

@@ -1,9 +1,10 @@
 ﻿using Xamarin.Forms;
+
 using ZXing.Common;
 
 namespace ZXing.Net.Mobile.Forms
 {
-	public class ZXingBarcodeImageView : Image
+    public class ZXingBarcodeImageView : Image
 	{
 		public ZXingBarcodeImageView() : base()
 		{
@@ -43,4 +44,3 @@ namespace ZXing.Net.Mobile.Forms
 		}
 	}
 }
-

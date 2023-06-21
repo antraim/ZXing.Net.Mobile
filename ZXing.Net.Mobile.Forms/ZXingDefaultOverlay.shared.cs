@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Windows.Input;
+
 using Xamarin.Forms;
 
 namespace ZXing.Net.Mobile.Forms
 {
-	public class ZXingDefaultOverlay : Grid
+    public class ZXingDefaultOverlay : Grid
 	{
 		readonly Label topText;
 		readonly Label botText;

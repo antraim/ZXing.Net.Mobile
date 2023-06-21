@@ -1,17 +1,20 @@
 ﻿using System;
-using Xamarin.Forms;
-using ZXing.Net.Mobile.Forms;
-using Xamarin.Forms.Platform.iOS;
 using System.ComponentModel;
-using System.Reflection;
+
 using Foundation;
-using ZXing.Net.Mobile.Forms.iOS;
+
 using UIKit;
+
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
+
+using ZXing.Net.Mobile.Forms;
+using ZXing.Net.Mobile.Forms.iOS;
 
 [assembly: ExportRenderer(typeof(ZXingScannerView), typeof(ZXingScannerViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.iOS
 {
-	[Preserve(AllMembers = true)]
+    [Preserve(AllMembers = true)]
 	public class ZXingScannerViewRenderer : ViewRenderer<ZXingScannerView, ZXing.Mobile.ZXingScannerView>
 	{
 		// No-op to be called from app to prevent linker from stripping this out    
@@ -118,4 +121,3 @@ namespace ZXing.Net.Mobile.Forms.iOS
 		}
 	}
 }
-

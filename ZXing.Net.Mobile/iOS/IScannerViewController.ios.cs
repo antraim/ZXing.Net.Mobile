@@ -4,7 +4,7 @@ using UIKit;
 
 namespace ZXing.Mobile
 {
-	public interface IScannerViewController
+    public interface IScannerViewController
 	{
 		void Torch(bool on);
 
@@ -25,4 +25,3 @@ namespace ZXing.Mobile
 		UIViewController AsViewController();
 	}
 }
-

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ZXing.Mobile
 {
-	public partial class MobileBarcodeScanner : MobileBarcodeScannerBase
+    public partial class MobileBarcodeScanner : MobileBarcodeScannerBase
 	{
 		public override Task<Result> Scan(MobileBarcodeScanningOptions options)
 			=> PlatformScan(options);

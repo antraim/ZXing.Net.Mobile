@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 using UIKit;
-using ZXing.Mobile;
 
 namespace ZXing.Mobile
 {
-	public class UIImageBarcodeReader : BarcodeReader<UIImage>, IBarcodeReader
+    public class UIImageBarcodeReader : BarcodeReader<UIImage>, IBarcodeReader
 	{
 		static readonly Func<UIImage, LuminanceSource> defaultCreateLuminanceSource =
 		   (img) => new RGBLuminanceSourceiOS(img);

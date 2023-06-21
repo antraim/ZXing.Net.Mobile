@@ -1,18 +1,12 @@
 using System;
-using System.Drawing;
-using System.Text;
-using System.Collections.Generic;
 
-using UIKit;
-using Foundation;
-using AVFoundation;
 using CoreGraphics;
 
-using ZXing;
+using UIKit;
 
 namespace ZXing.Mobile
 {
-	public class AVCaptureScannerViewController : UIViewController, IScannerViewController
+    public class AVCaptureScannerViewController : UIViewController, IScannerViewController
 	{
 		AVCaptureScannerView scannerView;
 
@@ -172,4 +166,3 @@ namespace ZXing.Mobile
 		//}
 	}
 }
-

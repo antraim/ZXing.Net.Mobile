@@ -1,28 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 
 using Android.App;
 using Android.Content.PM;
-using Android.Views;
 using Android.OS;
-using Android.Hardware;
-using Android.Graphics;
-
-using Android.Content;
 using Android.Runtime;
-using Android.Widget;
+using Android.Views;
 
-using ZXing;
 using AndroidX.Fragment.App;
-
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ZXing.Mobile
 {
-	[Activity(Label = "Scanner", ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenLayout)]
+    [Activity(Label = "Scanner", ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenLayout)]
 	public class ZxingActivity : FragmentActivity
 	{
 		public static readonly string[] RequiredPermissions = new[] {

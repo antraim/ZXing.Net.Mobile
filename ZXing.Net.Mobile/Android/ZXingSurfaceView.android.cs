@@ -1,14 +1,16 @@
 using System;
+
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Views;
-using Android.Graphics;
+
 using ZXing.Mobile.CameraAccess;
 using ZXing.Net.Mobile.Android;
 
 namespace ZXing.Mobile
 {
-	public class ZXingSurfaceView : SurfaceView, ISurfaceHolderCallback, IScannerView, IScannerSessionHost
+    public class ZXingSurfaceView : SurfaceView, ISurfaceHolderCallback, IScannerView, IScannerSessionHost
 	{
 		public ZXingSurfaceView(Context context, MobileBarcodeScanningOptions options)
 			: base(context)

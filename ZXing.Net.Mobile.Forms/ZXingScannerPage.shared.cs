@@ -1,9 +1,10 @@
 ﻿using Xamarin.Forms;
+
 using ZXing.Mobile;
 
 namespace ZXing.Net.Mobile.Forms
 {
-	public class ZXingScannerPage : ContentPage
+    public class ZXingScannerPage : ContentPage
 	{
 		readonly ZXingScannerView zxing;
 		readonly ZXingDefaultOverlay defaultOverlay = null;

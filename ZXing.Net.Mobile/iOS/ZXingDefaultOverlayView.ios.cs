@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 
-using Foundation;
-using CoreGraphics;
-using CoreFoundation;
-using UIKit;
 using AVFoundation;
 
-using ZXing.Mobile;
+using CoreGraphics;
+
+using UIKit;
 
 namespace ZXing.Mobile
 {
-	public class ZXingDefaultOverlayView : UIView
+    public class ZXingDefaultOverlayView : UIView
 	{
 		public ZXingDefaultOverlayView(CGRect frame, string topText,
 										string bottomText, string cancelText, string flashText,
@@ -185,4 +183,3 @@ namespace ZXing.Mobile
 			});
 	}
 }
-

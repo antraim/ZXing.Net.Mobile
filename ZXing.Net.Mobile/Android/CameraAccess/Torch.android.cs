@@ -4,7 +4,7 @@ using Android.Hardware;
 
 namespace ZXing.Mobile.CameraAccess
 {
-	public class Torch
+    public class Torch
 	{
 		readonly CameraController cameraController;
 		readonly Context context;

@@ -1,19 +1,21 @@
 ﻿using System;
+using System.ComponentModel;
+
+using Foundation;
+
+using UIKit;
+
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
+
+using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
 using ZXing.Net.Mobile.Forms.iOS;
-using System.ComponentModel;
-using System.Reflection;
-using ZXing.Mobile;
-using System.Threading.Tasks;
-using Xamarin.Forms.Platform.iOS;
-using Foundation;
-using UIKit;
 
 [assembly: ExportRenderer(typeof(ZXingBarcodeImageView), typeof(ZXingBarcodeImageViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.iOS
 {
-	[Preserve(AllMembers = true)]
+    [Preserve(AllMembers = true)]
 	public class ZXingBarcodeImageViewRenderer : ViewRenderer<ZXingBarcodeImageView, UIImageView>
 	{
 		public static void Init()
@@ -82,4 +84,3 @@ namespace ZXing.Net.Mobile.Forms.iOS
 		}
 	}
 }
-
