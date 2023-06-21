@@ -1,11 +1,10 @@
-﻿using System;
-using Xamarin.Forms;
-using System.Threading.Tasks;
+﻿using Xamarin.Forms;
+
 using ZXing.Net.Mobile.Forms;
 
 namespace Sample.Forms
 {
-	public class BarcodePage : ContentPage
+    public class BarcodePage : ContentPage
 	{
 		ZXingBarcodeImageView barcode;
 
