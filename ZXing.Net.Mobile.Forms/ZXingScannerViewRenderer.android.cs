@@ -60,7 +60,7 @@ namespace ZXing.Net.Mobile.Forms.Android
 						return;
 					}
 
-					var nativeView = new ZXingSurfaceView(Context as Activity, FormsView.Options)
+					var nativeView = new ZXing.Mobile.ZXingSurfaceView(Context as Activity, FormsView.Options)
 					{
 						LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
 					};
