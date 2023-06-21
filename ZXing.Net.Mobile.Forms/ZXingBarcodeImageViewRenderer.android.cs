@@ -2,7 +2,6 @@
 using System.ComponentModel;
 
 using Android.Content;
-using Android.Graphics;
 using Android.Runtime;
 using Android.Widget;
 
