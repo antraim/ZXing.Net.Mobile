@@ -183,13 +183,13 @@ namespace ZXing.Mobile
 				session.AddInput(input);
 
 
-			var startedAVPreviewLayerAlloc = PerformanceCounter.Start();
+			var start1 = PerformanceCounter.Start();
 
 			previewLayer = new AVCaptureVideoPreviewLayer(session);
 
-			PerformanceCounter.Stop(startedAVPreviewLayerAlloc, "Alloc AVCaptureVideoPreviewLayer took {0} ms.");
+			PerformanceCounter.Stop(start1, "Alloc AVCaptureVideoPreviewLayer took {0} ms");
 
-			var perf2 = PerformanceCounter.Start();
+			var start2 = PerformanceCounter.Start();
 
 			previewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
 			previewLayer.Frame = new CGRect(0, 0, Frame.Width, Frame.Height);
@@ -209,15 +209,15 @@ namespace ZXing.Mobile
 				BringSubviewToFront(overlayView);
 			}
 
-			PerformanceCounter.Stop(perf2, "PERF: Setting up layers took {0} ms");
+			PerformanceCounter.Stop(start2, "Setup Layers took {0} ms");
 
-			var perf3 = PerformanceCounter.Start();
+			var start3 = PerformanceCounter.Start();
 
 			session.StartRunning();
 
-			PerformanceCounter.Stop(perf3, "PERF: session.StartRunning() took {0} ms");
+			PerformanceCounter.Stop(start3, "session.StartRunning() took {0} ms");
 
-			var perf4 = PerformanceCounter.Start();
+			var start4 = PerformanceCounter.Start();
 
 			var videoSettings = NSDictionary.FromObjectAndKey(new NSNumber((int)CVPixelFormatType.CV32BGRA),
 				CVPixelBuffer.PixelFormatTypeKey);
@@ -242,14 +242,14 @@ namespace ZXing.Mobile
 
 				try
 				{
-					var perfDecode = PerformanceCounter.Start();
+					var start5 = PerformanceCounter.Start();
 
 					if (shouldRotatePreviewBuffer)
 						ls = ls.rotateCounterClockwise();
 
 					var result = barcodeReader.Decode(ls);
 
-					PerformanceCounter.Stop(perfDecode, "Decode Time: {0} ms");
+					PerformanceCounter.Stop(start5, "Decode Time {0} ms");
 
 					if (result != null)
 					{
@@ -268,11 +268,11 @@ namespace ZXing.Mobile
 			output.AlwaysDiscardsLateVideoFrames = true;
 			output.SetSampleBufferDelegate(outputRecorder, queue);
 
-			PerformanceCounter.Stop(perf4, "PERF: SetupCamera Finished.  Took {0} ms.");
+			PerformanceCounter.Stop(start4, "Setup Camera Finished took {0} ms");
 
 			session.AddOutput(output);
 
-			var perf5 = PerformanceCounter.Start();
+			var start6 = PerformanceCounter.Start();
 
 			if (captureDevice.LockForConfiguration(out var err))
 			{
@@ -329,7 +329,7 @@ namespace ZXing.Mobile
 			else
 				Console.WriteLine("Failed to Lock for Config: " + err.Description);
 
-			PerformanceCounter.Stop(perf5, "PERF: Setup Focus in {0} ms.");
+			PerformanceCounter.Stop(start6, "Setup Focus in {0} ms");
 
 			return true;
 		}
@@ -504,7 +504,7 @@ namespace ZXing.Mobile
 
 			stopped = false;
 
-			var perf = PerformanceCounter.Start();
+			var start = PerformanceCounter.Start();
 
 			Setup();
 
@@ -535,7 +535,7 @@ namespace ZXing.Mobile
 			if (!analyzing)
 				analyzing = true;
 
-			PerformanceCounter.Stop(perf, "PERF: StartScanning() Took {0} ms.");
+			PerformanceCounter.Stop(start, "Start Scanning took {0} ms");
 
 			OnScannerSetupComplete?.Invoke();
 		}

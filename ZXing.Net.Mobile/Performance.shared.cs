@@ -6,7 +6,7 @@ namespace ZXing.Mobile
 {
     public class PerformanceCounter
 	{
-		static Dictionary<string, Stopwatch> counters = new Dictionary<string, Stopwatch>();
+		static Dictionary<string, Stopwatch> _counters = new Dictionary<string, Stopwatch>();
 
 		public static string Start()
 		{
@@ -14,36 +14,36 @@ namespace ZXing.Mobile
 
 			var sw = new Stopwatch();
 
-			counters.Add(guid, sw);
+			_counters.Add(guid, sw);
 
 			sw.Start();
 
 			return guid;
 		}
 
-		public static TimeSpan Stop(string guid)
-		{
-			if (!counters.ContainsKey(guid))
-				return TimeSpan.Zero;
-
-			var sw = counters[guid];
-
-			sw.Stop();
-
-			counters.Remove(guid);
-
-			return sw.Elapsed;
-		}
-
-		public static void Stop(string guid, string msg)
+		public static void Stop(string guid, string message)
 		{
 			var elapsed = Stop(guid);
 
-			if (!msg.Contains("{0}"))
-				msg += " {0}";
+			if (!message.Contains("{0}"))
+				message += " {0}";
 
 			if (Debugger.IsAttached)
-				System.Diagnostics.Debug.WriteLine(msg, elapsed.TotalMilliseconds);
+				Debug.WriteLine($"***{message}", elapsed.TotalMilliseconds);
+		}
+
+		static TimeSpan Stop(string guid)
+		{
+			if (!_counters.ContainsKey(guid))
+				return TimeSpan.Zero;
+
+			var sw = _counters[guid];
+
+			sw.Stop();
+
+			_counters.Remove(guid);
+
+			return sw.Elapsed;
 		}
 	}
 }

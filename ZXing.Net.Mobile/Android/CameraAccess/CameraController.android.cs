@@ -15,23 +15,14 @@ using Camera = Android.Hardware.Camera;
 
 namespace ZXing.Mobile.CameraAccess
 {
-    public class CameraController
+	public class CameraController
 	{
-		readonly Context context;
-		readonly ISurfaceHolder holder;
-		readonly SurfaceView surfaceView;
-		readonly CameraEventsListener cameraEventListener;
-		int cameraId;
-		IScannerSessionHost scannerHost;
-
-		public CameraController(SurfaceView surfaceView, CameraEventsListener cameraEventListener, IScannerSessionHost scannerHost)
-		{
-			context = surfaceView.Context;
-			holder = surfaceView.Holder;
-			this.surfaceView = surfaceView;
-			this.cameraEventListener = cameraEventListener;
-			this.scannerHost = scannerHost;
-		}
+		readonly Context _context;
+		readonly ISurfaceHolder _holder;
+		readonly SurfaceView _surfaceView;
+		readonly CameraEventsListener _cameraEventListener;
+		IScannerSessionHost _scannerHost;
+		int _cameraId;
 
 		public Camera Camera { get; private set; }
 
@@ -39,67 +30,63 @@ namespace ZXing.Mobile.CameraAccess
 
 		public int LastCameraDisplayOrientationDegree { get; private set; }
 
-		public void RefreshCamera()
+		public CameraController(SurfaceView surfaceView, CameraEventsListener cameraEventListener, IScannerSessionHost scannerHost)
 		{
-			if (holder == null) return;
-
-			ApplyCameraSettings();
-
-			try
-			{
-				Camera.SetPreviewDisplay(holder);
-				Camera.StartPreview();
-			}
-			catch (Exception ex)
-			{
-				Android.Util.Log.Debug(MobileBarcodeScanner.TAG, ex.ToString());
-			}
+			_context = surfaceView.Context;
+			_holder = surfaceView.Holder;
+			_surfaceView = surfaceView;
+			_cameraEventListener = cameraEventListener;
+			_scannerHost = scannerHost;
 		}
+
+		#region
 
 		public void SetupCamera()
 		{
 			if (Camera != null)
 				return;
 
-			var perf = PerformanceCounter.Start();
+			var start = PerformanceCounter.Start();
+
 			OpenCamera();
-			PerformanceCounter.Stop(perf, "Setup Camera took {0}ms");
 
-			if (Camera == null) return;
+			PerformanceCounter.Stop(start, "Setup Camera took {0} ms");
 
-			perf = PerformanceCounter.Start();
+			if (Camera == null)
+				return;
+
+			start = PerformanceCounter.Start();
+
 			ApplyCameraSettings();
 
 			try
 			{
-				Camera.SetPreviewDisplay(holder);
-
+				Camera.SetPreviewDisplay(_holder);
 
 				var previewParameters = Camera.GetParameters();
 				var previewSize = previewParameters.PreviewSize;
 				var bitsPerPixel = ImageFormat.GetBitsPerPixel(previewParameters.PreviewFormat);
 
-
 				var bufferSize = (previewSize.Width * previewSize.Height * bitsPerPixel) / 8;
+
 				const int NUM_PREVIEW_BUFFERS = 5;
+
 				for (uint i = 0; i < NUM_PREVIEW_BUFFERS; ++i)
-				{
 					using (var buffer = new FastJavaByteArray(bufferSize))
 						Camera.AddCallbackBuffer(buffer);
-				}
 
 				Camera.StartPreview();
-
-				Camera.SetNonMarshalingPreviewCallback(cameraEventListener);
+				Camera.SetNonMarshalingPreviewCallback(_cameraEventListener);
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Debug(MobileBarcodeScanner.TAG, ex.ToString());
+				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Setup Camera Failed: {0}", ex);
+
 				return;
 			}
 			finally
 			{
-				PerformanceCounter.Stop(perf, "Setup Camera Parameters took {0}ms");
+				PerformanceCounter.Stop(start, "Setup Camera Parameters took {0} ms");
 			}
 
 			// Docs suggest if Auto or Macro modes, we should invoke AutoFocus at least once
@@ -107,6 +94,56 @@ namespace ZXing.Mobile.CameraAccess
 			if (currentFocusMode == Camera.Parameters.FocusModeAuto
 				|| currentFocusMode == Camera.Parameters.FocusModeMacro)
 				AutoFocus();
+		}
+
+		public void ShutdownCamera()
+		{
+			if (Camera == null)
+				return;
+
+			// camera release logic takes about 0.005 sec so there is no need in async releasing
+			var start = PerformanceCounter.Start();
+
+			try
+			{
+				Camera.StopPreview();
+				Camera.SetNonMarshalingPreviewCallback(null);
+				Camera.SetPreviewDisplay(null);
+				Camera.Release();
+				Camera = null;
+			}
+			catch (Exception ex)
+			{
+				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Shutdown Camera Failed: {0}", ex);
+			}
+			finally
+			{
+				PerformanceCounter.Stop(start, "Shutdown Camera took {0} ms");
+			}
+		}
+
+		public void RefreshCamera()
+		{
+			if (_holder == null)
+				return;
+
+			var start = PerformanceCounter.Start();
+
+			ApplyCameraSettings();
+
+			try
+			{
+				Camera.SetPreviewDisplay(_holder);
+				Camera.StartPreview();
+			}
+			catch (Exception ex)
+			{
+				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Refresh Camera Failed: {0}", ex);
+			}
+			finally
+			{
+				PerformanceCounter.Stop(start, "Refresh Camera took {0} ms");
+			}
 		}
 
 		public void AutoFocus()
@@ -118,45 +155,14 @@ namespace ZXing.Mobile.CameraAccess
 		{
 			// The bounds for focus areas are actually -1000 to 1000
 			// So we need to translate the touch coordinates to this scale
-			var focusX = x / surfaceView.Width * 2000 - 1000;
-			var focusY = y / surfaceView.Height * 2000 - 1000;
+			var focusX = x / _surfaceView.Width * 2000 - 1000;
+			var focusY = y / _surfaceView.Height * 2000 - 1000;
 
 			// Call the autofocus with our coords
 			AutoFocus(focusX, focusY, true);
 		}
 
-		public void ShutdownCamera()
-		{
-			if (Camera == null) return;
-
-			// camera release logic takes about 0.005 sec so there is no need in async releasing
-			var perf = PerformanceCounter.Start();
-			try
-			{
-				try
-				{
-					Camera.StopPreview();
-					Camera.SetNonMarshalingPreviewCallback(null);
-
-					//Camera.SetPreviewCallback(null);
-
-					Android.Util.Log.Debug(MobileBarcodeScanner.TAG, $"Calling SetPreviewDisplay: null");
-					Camera.SetPreviewDisplay(null);
-				}
-				catch (Exception ex)
-				{
-					Android.Util.Log.Error(MobileBarcodeScanner.TAG, ex.ToString());
-				}
-				Camera.Release();
-				Camera = null;
-			}
-			catch (Exception e)
-			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, e.ToString());
-			}
-
-			PerformanceCounter.Stop(perf, "Shutdown camera took {0}ms");
-		}
+		#endregion
 
 		void OpenCamera()
 		{
@@ -166,73 +172,75 @@ namespace ZXing.Mobile.CameraAccess
 
 				if (version >= BuildVersionCodes.Gingerbread)
 				{
-					Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "Checking Number of cameras...");
+					Android.Util.Log.Info(MobileBarcodeScanner.TAG, "Checking Number Of Cameras...");
 
-					var numCameras = Camera.NumberOfCameras;
-					var camInfo = new Camera.CameraInfo();
+					var numberOfCameras = Camera.NumberOfCameras;
+					var cameraInfo = new Camera.CameraInfo();
 					var found = false;
-					Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "Found " + numCameras + " cameras...");
+
+					Android.Util.Log.Debug(MobileBarcodeScanner.TAG, $"Found {numberOfCameras} Cameras...");
 
 					var whichCamera = CameraFacing.Back;
 
-					if (scannerHost.ScanningOptions.UseFrontCameraIfAvailable.HasValue &&
-						scannerHost.ScanningOptions.UseFrontCameraIfAvailable.Value)
+					if (_scannerHost.ScanningOptions.UseFrontCameraIfAvailable.HasValue &&
+						_scannerHost.ScanningOptions.UseFrontCameraIfAvailable.Value)
 						whichCamera = CameraFacing.Front;
 
-					for (var i = 0; i < numCameras; i++)
+					for (var i = 0; i < numberOfCameras; i++)
 					{
-						Camera.GetCameraInfo(i, camInfo);
-						if (camInfo.Facing == whichCamera)
+						Camera.GetCameraInfo(i, cameraInfo);
+
+						if (cameraInfo.Facing == whichCamera)
 						{
-							Android.Util.Log.Debug(MobileBarcodeScanner.TAG,
-								"Found " + whichCamera + " Camera, opening...");
+							Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Found {whichCamera} Camera, Opening...");
+
 							Camera = Camera.Open(i);
-							cameraId = i;
+
+							_cameraId = i;
+
 							found = true;
+
 							break;
 						}
 					}
 
 					if (!found)
 					{
-						Android.Util.Log.Debug(MobileBarcodeScanner.TAG,
-							"Finding " + whichCamera + " camera failed, opening camera 0...");
+						Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Finding {whichCamera} Camera Failed, Opening Camera 0...");
+
 						Camera = Camera.Open(0);
-						cameraId = 0;
+
+						_cameraId = 0;
 					}
 				}
 				else
 				{
 					Camera = Camera.Open();
 				}
-
-				//if (Camera != null)
-				//    Camera.SetPreviewCallback(_cameraEventListener);
-				//else
-				//    MobileBarcodeScanner.LogWarn(MobileBarcodeScanner.TAG, "Camera is null :(");
 			}
 			catch (Exception ex)
 			{
 				ShutdownCamera();
-				MobileBarcodeScanner.LogError("Setup Error: {0}", ex);
+
+				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Open Camera Failed: {0}", ex);
 			}
 		}
 
 		void ApplyCameraSettings()
 		{
 			if (Camera == null)
-			{
 				OpenCamera();
-			}
 
 			// do nothing if something wrong with camera
-			if (Camera == null) return;
+			if (Camera == null)
+				return;
 
 			var parameters = Camera.GetParameters();
 			parameters.PreviewFormat = ImageFormatType.Nv21;
 
 			var supportedFocusModes = parameters.SupportedFocusModes;
-			if (scannerHost.ScanningOptions.DisableAutofocus)
+
+			if (_scannerHost.ScanningOptions.DisableAutofocus)
 				parameters.FocusMode = Camera.Parameters.FocusModeFixed;
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.IceCreamSandwich &&
 				supportedFocusModes.Contains(Camera.Parameters.FocusModeContinuousPicture))
@@ -245,20 +253,22 @@ namespace ZXing.Mobile.CameraAccess
 				parameters.FocusMode = Camera.Parameters.FocusModeFixed;
 
 			var selectedFps = parameters.SupportedPreviewFpsRange.FirstOrDefault();
+
 			if (selectedFps != null)
 			{
 				// This will make sure we select a range with the highest maximum fps
 				// which still has the lowest minimum fps (Widest Range)
 				foreach (var fpsRange in parameters.SupportedPreviewFpsRange)
-				{
 					if (fpsRange[1] > selectedFps[1] || fpsRange[1] == selectedFps[1] && fpsRange[0] < selectedFps[0])
 						selectedFps = fpsRange;
-				}
+
 				parameters.SetPreviewFpsRange(selectedFps[0], selectedFps[1]);
 			}
 
 			CameraResolution resolution = null;
+
 			var supportedPreviewSizes = parameters.SupportedPreviewSizes;
+
 			if (supportedPreviewSizes != null)
 			{
 				var availableResolutions = supportedPreviewSizes.Select(sps => new CameraResolution
@@ -268,13 +278,11 @@ namespace ZXing.Mobile.CameraAccess
 				});
 
 				// Try and get a desired resolution from the options selector
-				resolution = scannerHost.ScanningOptions.GetResolution(availableResolutions.ToList());
+				resolution = _scannerHost.ScanningOptions.GetResolution(availableResolutions.ToList());
 
 				// If the user did not specify a resolution, let's try and find a suitable one
 				if (resolution == null)
-				{
 					foreach (var sps in supportedPreviewSizes)
-					{
 						if (sps.Width >= 640 && sps.Width <= 1000 && sps.Height >= 360 && sps.Height <= 1000)
 						{
 							resolution = new CameraResolution
@@ -282,10 +290,9 @@ namespace ZXing.Mobile.CameraAccess
 								Width = sps.Width,
 								Height = sps.Height
 							};
+
 							break;
 						}
-					}
-				}
 			}
 
 			// Google Glass requires this fix to display the camera output correctly
@@ -296,6 +303,7 @@ namespace ZXing.Mobile.CameraAccess
 					Width = 640,
 					Height = 360
 				};
+
 				// Glass requires 30fps
 				parameters.SetPreviewFpsRange(30000, 30000);
 			}
@@ -303,11 +311,11 @@ namespace ZXing.Mobile.CameraAccess
 			// Hopefully a resolution was selected at some point
 			if (resolution != null)
 			{
-				Android.Util.Log.Debug(MobileBarcodeScanner.TAG,
-					"Selected Resolution: " + resolution.Width + "x" + resolution.Height);
-
 				CameraResolution = resolution;
+
 				parameters.SetPreviewSize(resolution.Width, resolution.Height);
+
+				Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Selected Resolution: {resolution.Width} x {resolution.Height}");
 			}
 
 			Camera.SetParameters(parameters);
@@ -317,17 +325,19 @@ namespace ZXing.Mobile.CameraAccess
 
 		void AutoFocus(int x, int y, bool useCoordinates)
 		{
-			if (Camera == null) return;
+			if (Camera == null)
+				return;
 
-			if (scannerHost.ScanningOptions.DisableAutofocus)
+			if (_scannerHost.ScanningOptions.DisableAutofocus)
 			{
-				Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "AutoFocus Disabled");
+				Android.Util.Log.Info(MobileBarcodeScanner.TAG, "AutoFocus Disabled");
+
 				return;
 			}
 
 			var cameraParams = Camera.GetParameters();
 
-			Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "AutoFocus Requested");
+			Android.Util.Log.Info(MobileBarcodeScanner.TAG, "AutoFocus Requested");
 
 			// Cancel any previous requests
 			Camera.CancelAutoFocus();
@@ -358,29 +368,32 @@ namespace ZXing.Mobile.CameraAccess
 
 					// Explicitly set FocusModeAuto since Focus areas only work with this setting
 					cameraParams.FocusMode = Camera.Parameters.FocusModeAuto;
+
 					// Add our focus area
 					cameraParams.FocusAreas = new List<Camera.Area>
 					{
 						new Camera.Area(new Rect(x, y, x + 20, y + 20), 1000)
 					};
+
 					Camera.SetParameters(cameraParams);
 				}
 
 				// Finally autofocus (weather we used focus areas or not)
-				Camera.AutoFocus(cameraEventListener);
+				Camera.AutoFocus(_cameraEventListener);
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "AutoFocus Failed: {0}", ex);
+				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "AutoFocus Failed: {0}", ex);
 			}
 		}
 
 		void SetCameraDisplayOrientation()
 		{
 			var degrees = GetCameraDisplayOrientation();
+
 			LastCameraDisplayOrientationDegree = degrees;
 
-			Android.Util.Log.Debug(MobileBarcodeScanner.TAG, "Changing Camera Orientation to: " + degrees);
+			Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Changing Camera Orientation to {degrees}");
 
 			try
 			{
@@ -388,39 +401,31 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, ex.ToString());
+				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Set Camera Display Orientation Failed: {0}", ex);
 			}
 		}
 
 		int GetCameraDisplayOrientation()
 		{
-			int degrees;
-			var windowManager = context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+			var windowManager = _context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
 			var display = windowManager.DefaultDisplay;
 			var rotation = display.Rotation;
 
-			switch (rotation)
+			var degrees = rotation switch
 			{
-				case SurfaceOrientation.Rotation0:
-					degrees = 0;
-					break;
-				case SurfaceOrientation.Rotation90:
-					degrees = 90;
-					break;
-				case SurfaceOrientation.Rotation180:
-					degrees = 180;
-					break;
-				case SurfaceOrientation.Rotation270:
-					degrees = 270;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+				SurfaceOrientation.Rotation0 => 0,
+				SurfaceOrientation.Rotation90 => 90,
+				SurfaceOrientation.Rotation180 => 180,
+				SurfaceOrientation.Rotation270 => 270,
+				_ => throw new ArgumentOutOfRangeException(),
+			};
 
 			var info = new Camera.CameraInfo();
-			Camera.GetCameraInfo(cameraId, info);
+
+			Camera.GetCameraInfo(_cameraId, info);
 
 			int correctedDegrees;
+
 			if (info.Facing == CameraFacing.Front)
 			{
 				correctedDegrees = (info.Orientation + degrees) % 360;
@@ -428,7 +433,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			else
 			{
-				// back-facing
+				// Back-facing
 				correctedDegrees = (info.Orientation - degrees + 360) % 360;
 			}
 
