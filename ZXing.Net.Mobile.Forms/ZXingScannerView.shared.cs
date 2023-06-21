@@ -17,12 +17,6 @@ namespace ZXing.Net.Mobile.Forms
         public static readonly BindableProperty IsScanningProperty =
             BindableProperty.Create(nameof(IsScanning), typeof(bool), typeof(ZXingScannerView), false);
 
-        public static readonly BindableProperty IsTorchOnProperty =
-            BindableProperty.Create(nameof(IsTorchOn), typeof(bool), typeof(ZXingScannerView), false);
-
-        public static readonly BindableProperty HasTorchProperty =
-            BindableProperty.Create(nameof(HasTorch), typeof(bool), typeof(ZXingScannerView), false);
-
         public static readonly BindableProperty IsAnalyzingProperty =
             BindableProperty.Create(nameof(IsAnalyzing), typeof(bool), typeof(ZXingScannerView), true);
 
@@ -47,14 +41,6 @@ namespace ZXing.Net.Mobile.Forms
             get => (bool)GetValue(IsScanningProperty);
             set => SetValue(IsScanningProperty, value);
         }
-        public bool IsTorchOn
-        {
-            get => (bool)GetValue(IsTorchOnProperty);
-            set => SetValue(IsTorchOnProperty, value);
-        }
-
-        public bool HasTorch
-            => (bool)GetValue(HasTorchProperty);
 
         public bool IsAnalyzing
         {
@@ -93,9 +79,6 @@ namespace ZXing.Net.Mobile.Forms
 			OnScanResult?.Invoke(Result);
 			ScanResultCommand?.Execute(Result);
 		}
-
-		public void ToggleTorch()
-			=> IsTorchOn = !IsTorchOn;
 
 		public void AutoFocus()
 			=> AutoFocusRequested?.Invoke(-1, -1);

@@ -16,8 +16,7 @@ namespace ZXing.Net.Mobile.Forms.iOS
 {
     [Preserve(AllMembers = true)]
 	public class ZXingScannerViewRenderer : ViewRenderer<ZXingScannerView, ZXing.Mobile.ZXingScannerView>
-	{
-		// No-op to be called from app to prevent linker from stripping this out    
+	{  
 		public static void Init()
 		{
 			var _ = DateTime.Now;
@@ -34,7 +33,6 @@ namespace ZXing.Net.Mobile.Forms.iOS
 
 			if (zxingView == null)
 			{
-
 				// Process requests for autofocus
 				formsView.AutoFocusRequested += (x, y) =>
 				{
@@ -65,9 +63,6 @@ namespace ZXing.Net.Mobile.Forms.iOS
 
 				if (!formsView.IsAnalyzing)
 					zxingView.PauseAnalysis();
-
-				if (formsView.IsTorchOn)
-					zxingView.Torch(formsView.IsTorchOn);
 			}
 
 			base.OnElementChanged(e);
@@ -82,9 +77,6 @@ namespace ZXing.Net.Mobile.Forms.iOS
 
 			switch (e.PropertyName)
 			{
-				case nameof(ZXingScannerView.IsTorchOn):
-					zxingView.Torch(formsView.IsTorchOn);
-					break;
 				case nameof(ZXingScannerView.IsScanning):
 					if (formsView.IsScanning)
 						zxingView.StartScanning(formsView.RaiseScanResult, formsView.Options);
@@ -112,12 +104,13 @@ namespace ZXing.Net.Mobile.Forms.iOS
 			base.LayoutSubviews();
 
 			// Find the best guess at current orientation
-			var o = UIApplication.SharedApplication.StatusBarOrientation;
+			var orientation = UIApplication.SharedApplication.StatusBarOrientation;
+			
 			if (ViewController != null)
-				o = ViewController.InterfaceOrientation;
+				orientation = ViewController.InterfaceOrientation;
 
 			// Tell the native view to rotate
-			zxingView?.DidRotate(o);
+			zxingView?.DidRotate(orientation);
 		}
 	}
 }

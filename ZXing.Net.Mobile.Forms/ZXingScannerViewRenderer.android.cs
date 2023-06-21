@@ -18,17 +18,17 @@ namespace ZXing.Net.Mobile.Forms.Android
 {
     [Preserve(AllMembers = true)]
 	public class ZXingScannerViewRenderer : ViewRenderer<ZXingScannerView, ZXing.Mobile.ZXingSurfaceView>
-	{
-		public ZXingScannerViewRenderer(global::Android.Content.Context context)
+    {
+        public static void Init()
+        {
+            var _ = DateTime.Now;
+        }
+
+        public ZXingScannerViewRenderer(global::Android.Content.Context context)
 			: base(context)
 		{
 		}
 
-		public static void Init()
-		{
-			// Keep linker from stripping empty method
-			var temp = DateTime.Now;
-		}
 
 		protected ZXingScannerView formsView;
 
@@ -43,7 +43,6 @@ namespace ZXing.Net.Mobile.Forms.Android
 
 			if (zxingSurface == null)
 			{
-
 				// Process requests for autofocus
 				formsView.AutoFocusRequested += (x, y) =>
 				{
@@ -63,16 +62,6 @@ namespace ZXing.Net.Mobile.Forms.Android
 					return;
 				}
 
-				if (Xamarin.Essentials.Permissions.IsDeclaredInManifest("android.permission.FLASHLIGHT"))
-				{
-					var fp = await Xamarin.Essentials.Permissions.RequestAsync<Xamarin.Essentials.Permissions.Flashlight>();
-					if (fp != Xamarin.Essentials.PermissionStatus.Granted)
-					{
-						Console.WriteLine("Missing Flashlight Permission");
-						return;
-					}
-				}
-
 				zxingSurface = new ZXingSurfaceView(Context as Activity, formsView.Options);
 				zxingSurface.LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
@@ -80,9 +69,6 @@ namespace ZXing.Net.Mobile.Forms.Android
 
 				if (formsView.IsScanning)
 					zxingSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
-
-				if (formsView.IsTorchOn)
-					zxingSurface.Torch(true);
 			}
 		}
 
@@ -95,9 +81,6 @@ namespace ZXing.Net.Mobile.Forms.Android
 
 			switch (e.PropertyName)
 			{
-				case nameof(ZXingScannerView.IsTorchOn):
-					zxingSurface.Torch(formsView.IsTorchOn);
-					break;
 				case nameof(ZXingScannerView.IsScanning):
 					if (formsView.IsScanning)
 						zxingSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
