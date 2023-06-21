@@ -4,8 +4,8 @@
 	{
 		public static void Init()
 		{
-			ZXingScannerViewRenderer.Init();
 			ZXingBarcodeImageViewRenderer.Init();
+			ZXingScannerViewRenderer.Init();
 		}
 	}
 }

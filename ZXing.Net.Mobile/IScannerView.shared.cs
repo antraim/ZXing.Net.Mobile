@@ -12,6 +12,7 @@ namespace ZXing.Mobile
 
 		void AutoFocus();
 		void AutoFocus(int x, int y);
+
 		bool IsAnalyzing { get; }
 	}
 }
