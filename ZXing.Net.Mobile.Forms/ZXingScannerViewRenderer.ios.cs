@@ -5,6 +5,7 @@ using Foundation;
 
 using UIKit;
 
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -22,86 +23,98 @@ namespace ZXing.Net.Mobile.Forms.iOS
 			var _ = DateTime.Now;
 		}
 
-		protected ZXingScannerView formsView;
-		protected ZXing.Mobile.ZXingScannerView zxingView;
+		ZXingScannerView FormsView => Element;
 
 		protected override async void OnElementChanged(ElementChangedEventArgs<ZXingScannerView> e)
 		{
-			AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+			base.OnElementChanged(e);
 
-			formsView = Element;
-
-			if (zxingView == null)
+			if (e.NewElement != null)
 			{
-				// Process requests for autofocus
-				formsView.AutoFocusRequested += (x, y) =>
-				{
-					if (zxingView != null)
-					{
-						if (x < 0 && y < 0)
-							zxingView.AutoFocus();
-						else
-							zxingView.AutoFocus(x, y);
-					}
-				};
+				AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 
-				var cameraPermission = await Xamarin.Essentials.Permissions.RequestAsync<Xamarin.Essentials.Permissions.Camera>();
-				if (cameraPermission != Xamarin.Essentials.PermissionStatus.Granted)
+				if (Control == null)
 				{
-					Console.WriteLine("Missing Camera Permission");
-					return;
+					// Process requests for autofocus
+					FormsView.AutoFocusRequested += (x, y) =>
+					{
+						if (Control == null)
+							return;
+
+						if (x < 0 && y < 0)
+							Control.AutoFocus();
+						else
+							Control.AutoFocus(x, y);
+					};
+
+					var cameraPermission = await Permissions.RequestAsync<Permissions.Camera>();
+					if (cameraPermission != PermissionStatus.Granted)
+					{
+						Console.WriteLine("Missing Camera Permission");
+						return;
+					}
+
+					var nativeView = new ZXing.Mobile.ZXingScannerView
+					{
+						UseCustomOverlayView = true,
+						AutoresizingMask = AutoresizingMask
+					};
+
+					SetNativeControl(nativeView);
 				}
 
-				zxingView = new ZXing.Mobile.ZXingScannerView();
-				zxingView.UseCustomOverlayView = true;
-				zxingView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-
-				base.SetNativeControl(zxingView);
-
-				if (formsView.IsScanning)
-					zxingView.StartScanning(formsView.RaiseScanResult, formsView.Options);
-
-				if (!formsView.IsAnalyzing)
-					zxingView.PauseAnalysis();
+				UpdateScanning();
+				UpdateAnalysis();
 			}
-
-			base.OnElementChanged(e);
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
-			if (zxingView == null)
-				return;
-
-			switch (e.PropertyName)
-			{
-				case nameof(ZXingScannerView.IsScanning):
-					if (formsView.IsScanning)
-						zxingView.StartScanning(formsView.RaiseScanResult, formsView.Options);
-					else
-						zxingView.StopScanning();
-					break;
-				case nameof(ZXingScannerView.IsAnalyzing):
-					if (formsView.IsAnalyzing)
-						zxingView.ResumeAnalysis();
-					else
-						zxingView.PauseAnalysis();
-					break;
-			}
+			if (e.PropertyName.Equals(nameof(ZXingScannerView.IsScanning)))
+				UpdateScanning();
+			else if (e.PropertyName.Equals(nameof(ZXingScannerView.IsAnalyzing)))
+				UpdateAnalysis();
 		}
 
-		public override void TouchesEnded(NSSet touches, UIKit.UIEvent evt)
+		void UpdateScanning()
+		{
+			if (Control == null)
+				return;
+
+			if (FormsView.IsScanning)
+				Control.StartScanning(FormsView.RaiseScanResult, FormsView.Options);
+			else
+				Control.StopScanning();
+		}
+
+		void UpdateAnalysis()
+		{
+			if (Control == null)
+				return;
+
+			if (FormsView.IsAnalyzing)
+				Control.ResumeAnalysis();
+			else
+				Control.PauseAnalysis();
+		}
+
+		#region
+
+		public override void TouchesEnded(NSSet touches, UIEvent evt)
 		{
 			base.TouchesEnded(touches, evt);
 
-			zxingView?.AutoFocus();
+			Control?.AutoFocus();
 		}
 
 		public override void LayoutSubviews()
 		{
 			base.LayoutSubviews();
+
+			if (Control == null)
+				return;
 
 			// Find the best guess at current orientation
 			var orientation = UIApplication.SharedApplication.StatusBarOrientation;
@@ -110,7 +123,9 @@ namespace ZXing.Net.Mobile.Forms.iOS
 				orientation = ViewController.InterfaceOrientation;
 
 			// Tell the native view to rotate
-			zxingView?.DidRotate(orientation);
+			Control.DidRotate(orientation);
 		}
+
+		#endregion
 	}
 }

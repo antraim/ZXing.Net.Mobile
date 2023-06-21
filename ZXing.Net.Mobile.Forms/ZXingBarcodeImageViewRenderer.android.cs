@@ -23,38 +23,44 @@ namespace ZXing.Net.Mobile.Forms.Android
             var _ = DateTime.Now;
         }
 
-        ImageView _imageView;
-
         ZXingBarcodeImageView FormsView => Element;
 
         public ZXingBarcodeImageViewRenderer(Context context) : base(context) { }
 
         protected override void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
-        {
-            if (FormsView != null && _imageView == null)
-            {
-                _imageView = new ImageView(Context);
+		{
+			base.OnElementChanged(e);
 
-                SetNativeControl(_imageView);
-            }
+			if (e.NewElement != null)
+			{
+				if (Control == null)
+				{
+					var nativeView = new ImageView(Context);
 
-            Regenerate();
+					SetNativeControl(nativeView);
+				}
 
-            base.OnElementChanged(e);
+				Update();
+			}
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			base.OnElementPropertyChanged(sender, e);
+
 			if (e.PropertyName == nameof(ZXingBarcodeImageView.BarcodeValue)
 				|| e.PropertyName == nameof(ZXingBarcodeImageView.BarcodeOptions)
 				|| e.PropertyName == nameof(ZXingBarcodeImageView.BarcodeFormat))
-				Regenerate();
-
-			base.OnElementPropertyChanged(sender, e);
+				Update();
 		}
 
-		void Regenerate()
+		#region
+
+		void Update()
 		{
+			if (Control == null)
+				return;
+
 			BarcodeWriter writer = null;
 			string barcodeValue = null;
 
@@ -77,7 +83,7 @@ namespace ZXing.Net.Mobile.Forms.Android
 				{
 					var image = writer?.Write(barcodeValue);
 
-					_imageView?.SetImageBitmap(image);
+					Control.SetImageBitmap(image);
 				}
 				catch (Exception ex)
 				{
@@ -85,5 +91,7 @@ namespace ZXing.Net.Mobile.Forms.Android
 				}
 			});
 		}
+
+		#endregion
 	}
 }

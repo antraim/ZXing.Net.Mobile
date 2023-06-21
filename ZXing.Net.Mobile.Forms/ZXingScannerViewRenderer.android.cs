@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
+using System.Linq;
 
 using Android.App;
+using Android.Content;
 using Android.Runtime;
 using Android.Views;
 
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
 using ZXing.Net.Mobile.Forms.Android;
+
+using static ZXing.Mobile.MobileBarcodeScanningOptions;
 
 [assembly: ExportRenderer(typeof(ZXingScannerView), typeof(ZXingScannerViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.Android
@@ -24,51 +29,48 @@ namespace ZXing.Net.Mobile.Forms.Android
             var _ = DateTime.Now;
         }
 
-        public ZXingScannerViewRenderer(global::Android.Content.Context context)
-			: base(context)
-		{
-		}
+		ZXingScannerView FormsView => Element;
 
-
-		protected ZXingScannerView formsView;
-
-		protected ZXingSurfaceView zxingSurface;
-		internal Task<bool> requestPermissionsTask;
+		public ZXingScannerViewRenderer(Context context) : base(context) { }
 
 		protected override async void OnElementChanged(ElementChangedEventArgs<ZXingScannerView> e)
 		{
 			base.OnElementChanged(e);
 
-			formsView = Element;
-
-			if (zxingSurface == null)
+			if (e.NewElement != null)
 			{
-				// Process requests for autofocus
-				formsView.AutoFocusRequested += (x, y) =>
+				if (Control == null)
 				{
-					if (zxingSurface != null)
+					// Process requests for autofocus
+					FormsView.AutoFocusRequested += (x, y) =>
 					{
-						if (x < 0 && y < 0)
-							zxingSurface.AutoFocus();
-						else
-							zxingSurface.AutoFocus(x, y);
-					}
-				};
+						if (Control == null)
+							return;
 
-				var cameraPermission = await Xamarin.Essentials.Permissions.RequestAsync<Xamarin.Essentials.Permissions.Camera>();
-				if (cameraPermission != Xamarin.Essentials.PermissionStatus.Granted)
-				{
-					Console.WriteLine("Missing Camera Permission");
-					return;
+						if (x < 0 && y < 0)
+							Control.AutoFocus();
+						else
+							Control.AutoFocus(x, y);
+					};
+
+					var cameraPermission = await Permissions.RequestAsync<Permissions.Camera>();
+					if (cameraPermission != PermissionStatus.Granted)
+					{
+						Console.WriteLine("Missing Camera Permission");
+						return;
+					}
+
+					var nativeView = new ZXingSurfaceView(Context as Activity, FormsView.Options)
+					{
+						LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
+					};
+
+					SetNativeControl(nativeView);
 				}
 
-				zxingSurface = new ZXingSurfaceView(Context as Activity, formsView.Options);
-				zxingSurface.LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
-
-				base.SetNativeControl(zxingSurface);
-
-				if (formsView.IsScanning)
-					zxingSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
+				UpdateCameraResolutionSelector();
+				UpdateScanning();
+				UpdateAnalysis();
 			}
 		}
 
@@ -76,30 +78,58 @@ namespace ZXing.Net.Mobile.Forms.Android
 		{
 			base.OnElementPropertyChanged(sender, e);
 
-			if (zxingSurface == null)
+			if (e.PropertyName.Equals(nameof(ZXingScannerView.IsScanning)))
+				UpdateScanning();
+			else if (e.PropertyName.Equals(nameof(ZXingScannerView.IsAnalyzing)))
+				UpdateAnalysis();
+		}
+
+		void UpdateCameraResolutionSelector()
+		{
+			if (Control == null)
 				return;
 
-			switch (e.PropertyName)
-			{
-				case nameof(ZXingScannerView.IsScanning):
-					if (formsView.IsScanning)
-						zxingSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
-					else
-						zxingSurface.StopScanning();
-					break;
-				case nameof(ZXingScannerView.IsAnalyzing):
-					if (formsView.IsAnalyzing)
-						zxingSurface.ResumeAnalysis();
-					else
-						zxingSurface.PauseAnalysis();
-					break;
-			}
+			if (Control.ScanningOptions == null)
+				return;
+
+			Control.ScanningOptions.CameraResolutionSelector = new CameraResolutionSelectorDelegate(SelectLowestResolutionMatchingDisplayAspectRatio);
 		}
+
+		void UpdateScanning()
+		{
+			if (Control == null)
+				return;
+
+			if (FormsView.IsScanning)
+				Control.StartScanning(FormsView.RaiseScanResult, FormsView.Options);
+			else
+				Control.StopScanning();
+		}
+
+		void UpdateAnalysis()
+		{
+			if (Control == null)
+				return;
+
+			if (FormsView.IsAnalyzing)
+				Control.ResumeAnalysis();
+			else
+				Control.PauseAnalysis();
+		}
+
+		#region
 
 		volatile bool isHandlingTouch = false;
 
 		public override bool OnTouchEvent(MotionEvent e)
 		{
+			if (Control == null)
+			{
+				isHandlingTouch = false;
+
+				return base.OnTouchEvent(e);
+			}
+
 			if (!isHandlingTouch)
 			{
 				isHandlingTouch = true;
@@ -109,8 +139,7 @@ namespace ZXing.Net.Mobile.Forms.Android
 					var x = e.GetX();
 					var y = e.GetY();
 
-					if (Control != null)
-						Control.AutoFocus((int)x, (int)y);
+					Control.AutoFocus((int)x, (int)y);
 				}
 				finally
 				{
@@ -120,5 +149,40 @@ namespace ZXing.Net.Mobile.Forms.Android
 
 			return base.OnTouchEvent(e);
 		}
+
+		public CameraResolution SelectLowestResolutionMatchingDisplayAspectRatio(List<CameraResolution> availableResolutions)
+		{
+			CameraResolution result = null;
+
+			//a tolerance of 0.1 should not be visible to the user
+			var aspectTolerance = 0.1;
+			var displayOrientationHeight = DeviceDisplay.MainDisplayInfo.Orientation == DisplayOrientation.Portrait
+				? DeviceDisplay.MainDisplayInfo.Height
+				: DeviceDisplay.MainDisplayInfo.Width;
+			var displayOrientationWidth = DeviceDisplay.MainDisplayInfo.Orientation == DisplayOrientation.Portrait
+				? DeviceDisplay.MainDisplayInfo.Width
+				: DeviceDisplay.MainDisplayInfo.Height;
+
+			//calculatiing our targetRatio
+			var targetRatio = displayOrientationHeight / displayOrientationWidth;
+			var targetHeight = displayOrientationHeight;
+			var minDiff = double.MaxValue;
+
+			//camera API lists all available resolutions from highest to lowest, perfect for us
+			//making use of this sorting, following code runs some comparisons to select the lowest resolution that matches the screen aspect ratio and lies within tolerance
+			//selecting the lowest makes Qr detection actual faster most of the time
+			foreach (var r in availableResolutions.Where(r => Math.Abs(((double)r.Width / r.Height) - targetRatio) < aspectTolerance))
+			{
+				//slowly going down the list to the lowest matching solution with the correct aspect ratio
+				if (Math.Abs(r.Height - targetHeight) < minDiff)
+					minDiff = Math.Abs(r.Height - targetHeight);
+
+				result = r;
+			}
+
+			return result;
+		}
+
+		#endregion
 	}
 }

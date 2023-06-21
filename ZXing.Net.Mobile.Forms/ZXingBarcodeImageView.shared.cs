@@ -48,9 +48,6 @@ namespace ZXing.Net.Mobile.Forms
 
         #endregion
 
-        public ZXingBarcodeImageView() : base()
-		{
-
-		}
+        public ZXingBarcodeImageView() : base() { }
 	}
 }
