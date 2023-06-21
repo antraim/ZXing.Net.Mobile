@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
+using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Widget;
@@ -18,18 +19,32 @@ namespace ZXing.Net.Mobile.Forms.Android
     [Preserve(AllMembers = true)]
 	public class ZXingBarcodeImageViewRenderer : ViewRenderer<ZXingBarcodeImageView, ImageView>
 	{
-		public ZXingBarcodeImageViewRenderer(global::Android.Content.Context context) : base(context)
-		{ }
+        public static void Init()
+        {
+            var _ = DateTime.Now;
+        }
 
-		public static void Init()
-		{
-			var temp = DateTime.Now;
-		}
+        ImageView _imageView;
 
-		ZXingBarcodeImageView formsView;
-		ImageView imageView;
+        ZXingBarcodeImageView FormsView => Element;
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        public ZXingBarcodeImageViewRenderer(Context context) : base(context) { }
+
+        protected override void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
+        {
+            if (FormsView != null && _imageView == null)
+            {
+                _imageView = new ImageView(Context);
+
+                SetNativeControl(_imageView);
+            }
+
+            Regenerate();
+
+            base.OnElementChanged(e);
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(ZXingBarcodeImageView.BarcodeValue)
 				|| e.PropertyName == nameof(ZXingBarcodeImageView.BarcodeOptions)
@@ -39,42 +54,20 @@ namespace ZXing.Net.Mobile.Forms.Android
 			base.OnElementPropertyChanged(sender, e);
 		}
 
-		protected override void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
-		{
-			formsView = Element;
-
-			if (formsView != null && imageView == null)
-			{
-				imageView = new ImageView(Context);
-				SetNativeControl(imageView);
-			}
-
-			Regenerate();
-
-			base.OnElementChanged(e);
-		}
-
 		void Regenerate()
 		{
-			Bitmap image = null;
-
-			void SetImage(Bitmap img)
-			{
-				try { imageView?.SetImageBitmap(img); }
-				catch { }
-			}
-
 			BarcodeWriter writer = null;
 			string barcodeValue = null;
 
-			if (formsView != null
-				&& !string.IsNullOrWhiteSpace(formsView.BarcodeValue)
-				&& formsView.BarcodeFormat != BarcodeFormat.All_1D)
+			if (FormsView != null
+				&& !string.IsNullOrWhiteSpace(FormsView.BarcodeValue)
+				&& FormsView.BarcodeFormat != BarcodeFormat.All_1D)
 			{
-				barcodeValue = formsView.BarcodeValue;
-				writer = new BarcodeWriter { Format = formsView.BarcodeFormat };
-				if (formsView != null && formsView.BarcodeOptions != null)
-					writer.Options = formsView.BarcodeOptions;
+				barcodeValue = FormsView.BarcodeValue;
+				writer = new BarcodeWriter { Format = FormsView.BarcodeFormat };
+
+				if (FormsView != null && FormsView.BarcodeOptions != null)
+					writer.Options = FormsView.BarcodeOptions;
 			}
 
 			// Update or clear out the image depending if we had enough info
@@ -83,8 +76,9 @@ namespace ZXing.Net.Mobile.Forms.Android
 			{
 				try
 				{
-					var img = writer?.Write(barcodeValue);
-					imageView?.SetImageBitmap(img);
+					var image = writer?.Write(barcodeValue);
+
+					_imageView?.SetImageBitmap(image);
 				}
 				catch (Exception ex)
 				{

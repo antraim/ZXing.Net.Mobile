@@ -23,8 +23,23 @@ namespace ZXing.Net.Mobile.Forms.iOS
 			var temp = DateTime.Now;
 		}
 
-		ZXingBarcodeImageView formsView;
-		UIImageView imageView;
+		UIImageView _imageView;
+
+		ZXingBarcodeImageView FormsView => Element;
+
+		protected override void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
+		{
+			if (FormsView != null && _imageView == null)
+			{
+				_imageView = new UIImageView { ContentMode = UIViewContentMode.ScaleAspectFit };
+
+				SetNativeControl(_imageView);
+			}
+
+			Regenerate();
+
+			base.OnElementChanged(e);
+		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
@@ -36,34 +51,20 @@ namespace ZXing.Net.Mobile.Forms.iOS
 			base.OnElementPropertyChanged(sender, e);
 		}
 
-		protected override async void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
-		{
-			formsView = Element;
-
-			if (formsView != null && imageView == null)
-			{
-				imageView = new UIImageView { ContentMode = UIViewContentMode.ScaleAspectFit };
-				SetNativeControl(imageView);
-			}
-
-			Regenerate();
-
-			base.OnElementChanged(e);
-		}
-
 		void Regenerate()
 		{
 			BarcodeWriter writer = null;
 			string barcodeValue = null;
 
-			if (formsView != null
-				&& !string.IsNullOrWhiteSpace(formsView.BarcodeValue)
-				&& formsView.BarcodeFormat != BarcodeFormat.All_1D)
+			if (FormsView != null
+				&& !string.IsNullOrWhiteSpace(FormsView.BarcodeValue)
+				&& FormsView.BarcodeFormat != BarcodeFormat.All_1D)
 			{
-				barcodeValue = formsView.BarcodeValue;
-				writer = new BarcodeWriter { Format = formsView.BarcodeFormat };
-				if (formsView.BarcodeOptions != null)
-					writer.Options = formsView.BarcodeOptions;
+				barcodeValue = FormsView.BarcodeValue;
+				writer = new BarcodeWriter { Format = FormsView.BarcodeFormat };
+
+				if (FormsView != null && FormsView.BarcodeOptions != null)
+					writer.Options = FormsView.BarcodeOptions;
 			}
 
 			// Update or clear out the image depending if we had enough info
@@ -73,8 +74,9 @@ namespace ZXing.Net.Mobile.Forms.iOS
 				try
 				{
 					var image = writer?.Write(barcodeValue);
-					if (imageView != null)
-						imageView.Image = image;
+
+					if (_imageView != null)
+						_imageView.Image = image;
 				}
 				catch (Exception ex)
 				{
