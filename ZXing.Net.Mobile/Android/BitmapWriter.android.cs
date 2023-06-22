@@ -24,7 +24,6 @@ namespace ZXing.Mobile
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BarcodeWriter"/> class.
 		/// </summary>
-		public BarcodeWriter()
-			=> Renderer = new BitmapRenderer();
+		public BarcodeWriter() => Renderer = new BitmapRenderer();
 	}
 }

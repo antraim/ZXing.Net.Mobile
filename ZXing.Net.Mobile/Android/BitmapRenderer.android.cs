@@ -53,7 +53,6 @@ namespace ZXing.Mobile
 		/// <param name="matrix">The matrix.</param>
 		/// <param name="format">The format.</param>
 		/// <param name="content">The content.</param>
-		/// <returns></returns>
 		public Bitmap Render(BitMatrix matrix, BarcodeFormat format, string content)
 			=> Render(matrix, format, content, new EncodingOptions());
 
@@ -64,7 +63,6 @@ namespace ZXing.Mobile
 		/// <param name="format">The format.</param>
 		/// <param name="content">The content.</param>
 		/// <param name="options">The options.</param>
-		/// <returns></returns>
 		public Bitmap Render(BitMatrix matrix, BarcodeFormat format, string content, EncodingOptions options)
 		{
 			var width = matrix.Width;
@@ -75,16 +73,16 @@ namespace ZXing.Mobile
 			var bColor = Background.ToArgb();
 
 			for (var y = 0; y < height; y++)
-			{
 				for (var x = 0; x < width; x++)
 				{
 					pixels[outputIndex] = matrix[x, y] ? fColor : bColor;
 					outputIndex++;
 				}
-			}
 
 			var bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+
 			bitmap.SetPixels(pixels, 0, width, 0, 0, width, height);
+
 			return bitmap;
 		}
 	}

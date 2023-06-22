@@ -74,9 +74,7 @@ namespace ZXing.Mobile
 				throw new ArgumentException("Negative value", nameof(height));
 
 			if (left + width > dataWidth || top + height > dataHeight)
-			{
 				throw new ArgumentException("Crop rectangle does not fit within image data.");
-			}
 
 			_yuv = yuv;
 			_dataWidth = dataWidth;
@@ -104,11 +102,14 @@ namespace ZXing.Mobile
 				throw new ArgumentException("Requested row is outside the image: " + y, nameof(y));
 
 			var width = Width;
+
 			if (row == null || row.Length < width)
 				row = new byte[width]; // ensure we have room for the row
 
 			var offset = (y + _top) * _dataWidth + _left;
+
 			_yuv.BlockCopyTo(offset, row, 0, width);
+
 			return row;
 		}
 
@@ -127,6 +128,7 @@ namespace ZXing.Mobile
 				if (width == _dataWidth)
 				{
 					_yuv.BlockCopyTo(inputOffset, matrix, 0, area);
+
 					return matrix;
 				}
 
@@ -134,7 +136,9 @@ namespace ZXing.Mobile
 				for (var y = 0; y < height; y++)
 				{
 					var outputOffset = y * width;
+
 					_yuv.BlockCopyTo(inputOffset, matrix, outputOffset, width);
+
 					inputOffset += _dataWidth;
 				}
 				return matrix;
@@ -142,8 +146,7 @@ namespace ZXing.Mobile
 		}
 
 		/// <returns> Whether this subclass supports cropping.</returns>
-		override public bool CropSupported
-			=> true;
+		override public bool CropSupported => true;
 
 		/// <summary>
 		/// Returns a new object with cropped image data. Implementations may keep a reference to the
