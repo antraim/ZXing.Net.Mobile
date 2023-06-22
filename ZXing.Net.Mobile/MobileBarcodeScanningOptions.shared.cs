@@ -5,24 +5,24 @@ namespace ZXing.Mobile
 {
     public class MobileBarcodeScanningOptions
 	{
+		public static MobileBarcodeScanningOptions Default => new MobileBarcodeScanningOptions();
+
 		/// <summary>
 		/// Camera resolution selector delegate, must return the selected Resolution from the list of available resolutions
 		/// </summary>
 		public delegate CameraResolution CameraResolutionSelectorDelegate(List<CameraResolution> availableResolutions);
 
-		public MobileBarcodeScanningOptions()
-		{
-			PossibleFormats = new List<BarcodeFormat>();
-			//this.AutoRotate = true;
-			DelayBetweenAnalyzingFrames = 150;
-			InitialDelayBeforeAnalyzingFrames = 300;
-			DelayBetweenContinuousScans = 1000;
-			UseNativeScanning = false;
-		}
-
 		public CameraResolutionSelectorDelegate CameraResolutionSelector { get; set; }
 
 		public IEnumerable<BarcodeFormat> PossibleFormats { get; set; }
+
+		public int DelayBetweenContinuousScans { get; set; }
+
+		public int DelayBetweenAnalyzingFrames { get; set; }
+
+		public string CharacterSet { get; set; }
+
+		public bool DisableAutofocus { get; set; }
 
 		public bool? TryHarder { get; set; }
 
@@ -32,32 +32,23 @@ namespace ZXing.Mobile
 
 		public bool? UseCode39ExtendedMode { get; set; }
 
-		public string CharacterSet { get; set; }
-
 		public bool? TryInverted { get; set; }
 
 		public bool? UseFrontCameraIfAvailable { get; set; }
 
 		public bool? AssumeGS1 { get; set; }
 
-
-		public bool DisableAutofocus { get; set; }
-
-		public bool UseNativeScanning { get; set; }
-
-		public int DelayBetweenContinuousScans { get; set; }
-
-		public int DelayBetweenAnalyzingFrames { get; set; }
-		public int InitialDelayBeforeAnalyzingFrames { get; set; }
-
-		public static MobileBarcodeScanningOptions Default
+		public MobileBarcodeScanningOptions()
 		{
-			get { return new MobileBarcodeScanningOptions(); }
+			PossibleFormats = new List<BarcodeFormat>();
+			DelayBetweenAnalyzingFrames = 150;
+			DelayBetweenContinuousScans = 1000;
 		}
-
-		public BarcodeReaderGeneric BuildBarcodeReader()
+		
+        public BarcodeReaderGeneric BuildBarcodeReader()
 		{
 			var reader = new BarcodeReaderGeneric();
+
 			if (TryHarder.HasValue)
 				reader.Options.TryHarder = TryHarder.Value;
 			if (PureBarcode.HasValue)
@@ -105,14 +96,14 @@ namespace ZXing.Mobile
 
 		public CameraResolution GetResolution(List<CameraResolution> availableResolutions)
 		{
-			CameraResolution r = null;
+			CameraResolution resolution = null;
 
 			var dg = CameraResolutionSelector;
 
 			if (dg != null)
-				r = dg(availableResolutions);
+				resolution = dg(availableResolutions);
 
-			return r;
+			return resolution;
 		}
 	}
 }
