@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-using ZXing.Rendering;
 using UIKit;
 
 namespace ZXing.Mobile
 {
-	/// <summary>
-	/// A smart class to encode some content to a barcode image
-	/// </summary>
-	public class BarcodeWriter : BarcodeWriter<UIImage>, IBarcodeWriter
+    /// <summary>
+    /// A smart class to encode some content to a barcode image
+    /// </summary>
+    public class BarcodeWriter : BarcodeWriter<UIImage>, IBarcodeWriter
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BarcodeWriter"/> class.
-		/// </summary>
-		public BarcodeWriter()
-		{
-			Renderer = new BitmapRenderer();
-		}
-	}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BarcodeWriter"/> class.
+        /// </summary>
+        public BarcodeWriter() => Renderer = new BitmapRenderer();
+    }
 }

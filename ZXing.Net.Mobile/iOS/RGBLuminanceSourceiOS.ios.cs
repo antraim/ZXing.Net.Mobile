@@ -18,7 +18,6 @@ namespace ZXing.Mobile
 			var width = (int)imageRef.Width;
 			var height = (int)imageRef.Height;
 			var colorSpace = CGColorSpace.CreateDeviceRGB();
-
 			var rawData = Marshal.AllocHGlobal(height * width * 4);
 
 			try
@@ -28,7 +27,9 @@ namespace ZXing.Mobile
 					colorSpace, (CGImageAlphaInfo)flags);
 
 				context.DrawImage(new CGRect(0.0f, 0.0f, (float)width, (float)height), imageRef);
+
 				var pixelData = new byte[height * width * 4];
+
 				Marshal.Copy(rawData, pixelData, 0, pixelData.Length);
 
 				CalculateLuminance(pixelData, BitmapFormat.BGRA32);
