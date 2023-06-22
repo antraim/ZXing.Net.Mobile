@@ -18,7 +18,7 @@ namespace ZXing.Mobile.CameraAccess
 		bool _wasScanned;
 		BarcodeReaderGeneric _barcodeReader;
 
-		public Action<Result> BarcodeFound { get; set; }
+		public Action<Result> ScanResultCallback { get; set; }
 
 		public bool IsAnalyzing { get; private set; }
 
@@ -145,7 +145,7 @@ namespace ZXing.Mobile.CameraAccess
 			{
 				_wasScanned = true;
 
-				BarcodeFound?.Invoke(result);
+				ScanResultCallback?.Invoke(result);
 
 				Android.Util.Log.Info(PerformanceCounter.TAG, "Barcode Found");
 			}

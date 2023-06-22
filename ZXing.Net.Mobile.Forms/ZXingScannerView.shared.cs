@@ -80,10 +80,8 @@ namespace ZXing.Net.Mobile.Forms
 			ScanResultCommand?.Execute(Result);
 		}
 
-		public void AutoFocus()
-			=> AutoFocusRequested?.Invoke(-1, -1);
+		public void AutoFocus() => AutoFocusRequested?.Invoke(-1, -1);
 
-		public void AutoFocus(int x, int y)
-			=> AutoFocusRequested?.Invoke(x, y);
+		public void AutoFocus(int x, int y) => AutoFocusRequested?.Invoke(x, y);
 	}
 }

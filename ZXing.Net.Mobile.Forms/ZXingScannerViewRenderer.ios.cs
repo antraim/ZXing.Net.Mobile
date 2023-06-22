@@ -5,7 +5,6 @@ using Foundation;
 
 using UIKit;
 
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -25,7 +24,7 @@ namespace ZXing.Net.Mobile.Forms.iOS
 
 		ZXingScannerView FormsView => Element;
 
-		protected override async void OnElementChanged(ElementChangedEventArgs<ZXingScannerView> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<ZXingScannerView> e)
 		{
 			base.OnElementChanged(e);
 
@@ -46,13 +45,6 @@ namespace ZXing.Net.Mobile.Forms.iOS
 						else
 							Control.AutoFocus(x, y);
 					};
-
-					var cameraPermission = await Permissions.RequestAsync<Permissions.Camera>();
-					if (cameraPermission != PermissionStatus.Granted)
-					{
-						Console.WriteLine("Missing Camera Permission");
-						return;
-					}
 
 					var nativeView = new ZXing.Mobile.ZXingScannerView
 					{

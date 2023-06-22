@@ -30,7 +30,7 @@ namespace ZXing.Mobile
 		AVCaptureVideoDataOutput _output;
 		OutputRecorder _outputRecorder;
 		DispatchQueue _queue;
-		Action<Result> _barcodeFound;
+		Action<Result> _scanResultCallback;
 		volatile bool _stopped = true;
 		UIView _layerView;
 		bool _shouldRotatePreviewBuffer = false;
@@ -199,7 +199,7 @@ namespace ZXing.Mobile
 
 					if (result != null)
 					{
-						_barcodeFound(result);
+						_scanResultCallback(result);
 						return true;
 					}
 				}
@@ -443,7 +443,7 @@ namespace ZXing.Mobile
 
 		#region IScannerView
 
-		public void StartScanning(Action<Result> scanResultHandler, MobileBarcodeScanningOptions options = null)
+		public void StartScanning(Action<Result> scanResultCallback, MobileBarcodeScanningOptions options = null)
 		{
 			if (!_stopped)
 				return;
@@ -453,7 +453,7 @@ namespace ZXing.Mobile
 			var start = PerformanceCounter.Start();
 
 			ScanningOptions = options ?? MobileBarcodeScanningOptions.Default;
-			_barcodeFound = scanResultHandler;
+			_scanResultCallback = scanResultCallback;
 
 			Console.WriteLine("StartScanning");
 

@@ -146,10 +146,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 		}
 
-		public void AutoFocus()
-		{
-			AutoFocus(0, 0, false);
-		}
+		public void AutoFocus() => AutoFocus(0, 0, false);
 
 		public void AutoFocus(int x, int y)
 		{

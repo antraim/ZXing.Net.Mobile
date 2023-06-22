@@ -33,7 +33,7 @@ namespace ZXing.Net.Mobile.Forms.Android
 
 		public ZXingScannerViewRenderer(Context context) : base(context) { }
 
-		protected override async void OnElementChanged(ElementChangedEventArgs<ZXingScannerView> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<ZXingScannerView> e)
 		{
 			base.OnElementChanged(e);
 
@@ -52,13 +52,6 @@ namespace ZXing.Net.Mobile.Forms.Android
 						else
 							Control.AutoFocus(x, y);
 					};
-
-					var cameraPermission = await Permissions.RequestAsync<Permissions.Camera>();
-					if (cameraPermission != PermissionStatus.Granted)
-					{
-						Console.WriteLine("Missing Camera Permission");
-						return;
-					}
 
 					var nativeView = new ZXing.Mobile.ZXingSurfaceView(Context as Activity, FormsView.Options)
 					{
