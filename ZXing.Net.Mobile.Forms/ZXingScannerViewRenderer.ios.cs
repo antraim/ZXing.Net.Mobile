@@ -56,7 +56,6 @@ namespace ZXing.Net.Mobile.Forms.iOS
 
 					var nativeView = new ZXing.Mobile.ZXingScannerView
 					{
-						UseCustomOverlayView = true,
 						AutoresizingMask = AutoresizingMask
 					};
 

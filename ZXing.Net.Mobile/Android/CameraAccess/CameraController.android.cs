@@ -80,7 +80,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Setup Camera Failed: {0}", ex);
+				Android.Util.Log.Error(PerformanceCounter.TAG, "Setup Camera Failed: {0}", ex);
 
 				return;
 			}
@@ -114,7 +114,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Shutdown Camera Failed: {0}", ex);
+				Android.Util.Log.Error(PerformanceCounter.TAG, "Shutdown Camera Failed: {0}", ex);
 			}
 			finally
 			{
@@ -138,7 +138,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Refresh Camera Failed: {0}", ex);
+				Android.Util.Log.Error(PerformanceCounter.TAG, "Refresh Camera Failed: {0}", ex);
 			}
 			finally
 			{
@@ -172,13 +172,13 @@ namespace ZXing.Mobile.CameraAccess
 
 				if (version >= BuildVersionCodes.Gingerbread)
 				{
-					Android.Util.Log.Info(MobileBarcodeScanner.TAG, "Checking Number Of Cameras...");
+					Android.Util.Log.Info(PerformanceCounter.TAG, "Checking Number Of Cameras...");
 
 					var numberOfCameras = Camera.NumberOfCameras;
 					var cameraInfo = new Camera.CameraInfo();
 					var found = false;
 
-					Android.Util.Log.Debug(MobileBarcodeScanner.TAG, $"Found {numberOfCameras} Cameras...");
+					Android.Util.Log.Debug(PerformanceCounter.TAG, $"Found {numberOfCameras} Cameras...");
 
 					var whichCamera = CameraFacing.Back;
 
@@ -192,7 +192,7 @@ namespace ZXing.Mobile.CameraAccess
 
 						if (cameraInfo.Facing == whichCamera)
 						{
-							Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Found {whichCamera} Camera, Opening...");
+							Android.Util.Log.Info(PerformanceCounter.TAG, $"Found {whichCamera} Camera, Opening...");
 
 							Camera = Camera.Open(i);
 
@@ -206,7 +206,7 @@ namespace ZXing.Mobile.CameraAccess
 
 					if (!found)
 					{
-						Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Finding {whichCamera} Camera Failed, Opening Camera 0...");
+						Android.Util.Log.Info(PerformanceCounter.TAG, $"Finding {whichCamera} Camera Failed, Opening Camera 0...");
 
 						Camera = Camera.Open(0);
 
@@ -222,7 +222,7 @@ namespace ZXing.Mobile.CameraAccess
 			{
 				ShutdownCamera();
 
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Open Camera Failed: {0}", ex);
+				Android.Util.Log.Error(PerformanceCounter.TAG, "Open Camera Failed: {0}", ex);
 			}
 		}
 
@@ -315,7 +315,7 @@ namespace ZXing.Mobile.CameraAccess
 
 				parameters.SetPreviewSize(resolution.Width, resolution.Height);
 
-				Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Selected Resolution: {resolution.Width} x {resolution.Height}");
+				Android.Util.Log.Info(PerformanceCounter.TAG, $"Selected Resolution: {resolution.Width} x {resolution.Height}");
 			}
 
 			Camera.SetParameters(parameters);
@@ -330,14 +330,14 @@ namespace ZXing.Mobile.CameraAccess
 
 			if (_scannerHost.ScanningOptions.DisableAutofocus)
 			{
-				Android.Util.Log.Info(MobileBarcodeScanner.TAG, "AutoFocus Disabled");
+				Android.Util.Log.Info(PerformanceCounter.TAG, "AutoFocus Disabled");
 
 				return;
 			}
 
 			var cameraParams = Camera.GetParameters();
 
-			Android.Util.Log.Info(MobileBarcodeScanner.TAG, "AutoFocus Requested");
+			Android.Util.Log.Info(PerformanceCounter.TAG, "AutoFocus Requested");
 
 			// Cancel any previous requests
 			Camera.CancelAutoFocus();
@@ -383,7 +383,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "AutoFocus Failed: {0}", ex);
+				Android.Util.Log.Error(PerformanceCounter.TAG, "AutoFocus Failed: {0}", ex);
 			}
 		}
 
@@ -393,7 +393,7 @@ namespace ZXing.Mobile.CameraAccess
 
 			LastCameraDisplayOrientationDegree = degrees;
 
-			Android.Util.Log.Info(MobileBarcodeScanner.TAG, $"Changing Camera Orientation to {degrees}");
+			Android.Util.Log.Info(PerformanceCounter.TAG, $"Changing Camera Orientation to {degrees}");
 
 			try
 			{
@@ -401,7 +401,7 @@ namespace ZXing.Mobile.CameraAccess
 			}
 			catch (Exception ex)
 			{
-				Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Set Camera Display Orientation Failed: {0}", ex);
+				Android.Util.Log.Error(PerformanceCounter.TAG, "Set Camera Display Orientation Failed: {0}", ex);
 			}
 		}
 

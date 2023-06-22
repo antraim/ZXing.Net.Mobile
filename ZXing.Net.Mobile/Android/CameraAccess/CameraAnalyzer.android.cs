@@ -96,12 +96,12 @@ namespace ZXing.Mobile.CameraAccess
 				}
 				catch (Exception ex)
 				{
-					Android.Util.Log.Error(MobileBarcodeScanner.TAG, "Decode Frame Failed: {0}", ex);
+					Android.Util.Log.Error(PerformanceCounter.TAG, "Decode Frame Failed: {0}", ex);
 				}
 			}).ContinueWith(task =>
 			{
 				if (task.IsFaulted)
-					Android.Util.Log.Info(MobileBarcodeScanner.TAG, "DecodeFrame exception occurs");
+					Android.Util.Log.Info(PerformanceCounter.TAG, "DecodeFrame exception occurs");
 			}, TaskContinuationOptions.OnlyOnFaulted);
 		}
 
@@ -147,7 +147,7 @@ namespace ZXing.Mobile.CameraAccess
 
 				BarcodeFound?.Invoke(result);
 
-				Android.Util.Log.Info(MobileBarcodeScanner.TAG, "Barcode Found");
+				Android.Util.Log.Info(PerformanceCounter.TAG, "Barcode Found");
 			}
 		}
 	}

@@ -23,6 +23,6 @@ namespace ZXing.Mobile.CameraAccess
 		}
 
 		public void OnAutoFocus(bool success, Camera camera) =>
-			Android.Util.Log.Info(MobileBarcodeScanner.TAG, success ? "AutoFocus Succeeded" : "AutoFocus Failed");
+			Android.Util.Log.Info(PerformanceCounter.TAG, success ? "AutoFocus Succeeded" : "AutoFocus Failed");
 	}
 }

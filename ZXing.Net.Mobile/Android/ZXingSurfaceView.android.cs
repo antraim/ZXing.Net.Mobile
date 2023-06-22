@@ -15,9 +15,9 @@ namespace ZXing.Mobile
 		bool _addedHolderCallback;
 		bool _surfaceCreated;
 
-		public bool IsAnalyzing => _cameraAnalyzer.IsAnalyzing;
-
 		public MobileBarcodeScanningOptions ScanningOptions { get; set; }
+
+		public bool IsAnalyzing => _cameraAnalyzer.IsAnalyzing;
 
 		public ZXingSurfaceView(Context context, MobileBarcodeScanningOptions options)
 			: base(context)
@@ -82,20 +82,15 @@ namespace ZXing.Mobile
 			_cameraAnalyzer.ResumeAnalysis();
 		}
 
-		public void StopScanning()
-			=> _cameraAnalyzer.ShutdownCamera();
+		public void StopScanning() => _cameraAnalyzer.ShutdownCamera();
 
-		public void ResumeAnalysis()
-			=> _cameraAnalyzer.ResumeAnalysis();
+		public void AutoFocus() => _cameraAnalyzer.AutoFocus();
 
-		public void PauseAnalysis()
-			=> _cameraAnalyzer.PauseAnalysis();
+		public void AutoFocus(int x, int y) => _cameraAnalyzer.AutoFocus(x, y);
 
-		public void AutoFocus()
-			=> _cameraAnalyzer.AutoFocus();
+		public void ResumeAnalysis() => _cameraAnalyzer.ResumeAnalysis();
 
-		public void AutoFocus(int x, int y)
-			=> _cameraAnalyzer.AutoFocus(x, y);
+		public void PauseAnalysis() => _cameraAnalyzer.PauseAnalysis();
 
 		#endregion
 

@@ -6,6 +6,8 @@ namespace ZXing.Mobile
 {
     public class PerformanceCounter
 	{
+		public const string TAG = "ZXing.Net.Mobile";
+
 		static Dictionary<string, Stopwatch> _counters = new Dictionary<string, Stopwatch>();
 
 		public static string Start()
