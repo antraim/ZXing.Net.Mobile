@@ -7,12 +7,12 @@ using Xamarin.Essentials;
 
 namespace Sample.Forms.Droid
 {
-	[Activity(Label = "ZXing Forms",
+    [Activity(Label = "ZXing Forms",
 		Icon = "@mipmap/launcher",
 		Theme = "@style/MainTheme",
 		MainLauncher = true,
 		ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+	public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -24,7 +24,7 @@ namespace Sample.Forms.Droid
 			Platform.Init(this, savedInstanceState);
 			Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-			global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
+			ZXing.Net.Mobile.Forms.Android.Platform.Init();
 
 			LoadApplication(new App());
 		}

@@ -6,7 +6,6 @@ using ZXing.Mobile;
 
 namespace Sample.Forms
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ZXingScannerView : ContentPage
     {
         public ZXingScannerView()
