@@ -1,8 +1,6 @@
 # ZXing.Net.Mobile
 # This fork contains only ZXingSurfaceView for Xanarin.Android, ZXingScannerView for Xanarin.iOS and modified renderers of these views for Xamarin.Forms + ZXingBarcodeImageView. A lot of unnecessary garbage has been removed and classes have been refactored.
 
-[![Join the chat at https://gitter.im/Redth/ZXing.Net.Mobile](https://badges.gitter.im/Redth/ZXing.Net.Mobile.svg)](https://gitter.im/Redth/ZXing.Net.Mobile?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ![ZXing.Net.Mobile Logo](https://raw.github.com/Redth/ZXing.Net.Mobile/master/zxing.net.mobile_128x128.png)
 
 ZXing.Net.Mobile is a C#/.NET library based on the open source Barcode Library: [ZXing (Zebra Crossing)](https://github.com/zxing/zxing), using the [ZXing.Net Port](https://github.com/micjahn/ZXing.Net).  It works with Xamarin.iOS, Xamarin.Android and Xamarin.Forms.  The goal of ZXing.Net.Mobile is to make scanning barcodes as effortless and painless as possible in your own applications.
