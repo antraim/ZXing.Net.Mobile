@@ -1,4 +1,5 @@
 # ZXing.Net.Mobile
+# This fork contains only ZXingSurfaceView for Xanarin.Android, ZXingScannerView for Xanarin.iOS and modified renderers of these views for Xamarin.Forms + ZXingBarcodeImageView. A lot of unnecessary garbage has been removed and classes have been refactored.
 
 [![Join the chat at https://gitter.im/Redth/ZXing.Net.Mobile](https://badges.gitter.im/Redth/ZXing.Net.Mobile.svg)](https://gitter.im/Redth/ZXing.Net.Mobile?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
