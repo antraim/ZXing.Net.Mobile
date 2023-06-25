@@ -5,6 +5,8 @@ using Android.Runtime;
 
 using Xamarin.Essentials;
 
+using Xamarin.Forms;
+
 namespace Sample.Forms.Droid
 {
 	[Activity(Label = "ZXing Forms",

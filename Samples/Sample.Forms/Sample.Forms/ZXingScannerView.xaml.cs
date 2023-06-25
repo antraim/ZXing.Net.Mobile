@@ -1,4 +1,8 @@
 ﻿using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+using ZXing;
+using ZXing.Mobile;
 
 namespace Sample.Forms
 {
