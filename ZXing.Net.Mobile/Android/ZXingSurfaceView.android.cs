@@ -9,7 +9,7 @@ using ZXing.Mobile.CameraAccess;
 
 namespace ZXing.Mobile
 {
-    public class ZXingSurfaceView : SurfaceView, ISurfaceHolderCallback, IScannerView, IScannerSessionHost
+	public class ZXingSurfaceView : SurfaceView, ISurfaceHolderCallback, IScannerView, IScannerSessionHost
 	{
 		CameraAnalyzer _cameraAnalyzer;
 		bool _addedHolderCallback;
@@ -61,6 +61,7 @@ namespace ZXing.Mobile
 				if (_addedHolderCallback)
 				{
 					Holder?.RemoveCallback(this);
+
 					_addedHolderCallback = false;
 				}
 			}

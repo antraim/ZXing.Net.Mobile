@@ -15,19 +15,19 @@ using ZXing.Net.Mobile.Forms.Android;
 [assembly: ExportRenderer(typeof(ZXingBarcodeImageView), typeof(ZXingBarcodeImageViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.Android
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class ZXingBarcodeImageViewRenderer : ViewRenderer<ZXingBarcodeImageView, ImageView>
 	{
-        public static void Init()
-        {
-            var _ = DateTime.Now;
-        }
+		public static void Init()
+		{
+			var _ = DateTime.Now;
+		}
 
-        ZXingBarcodeImageView FormsView => Element;
+		ZXingBarcodeImageView FormsView => Element;
 
-        public ZXingBarcodeImageViewRenderer(Context context) : base(context) { }
+		public ZXingBarcodeImageViewRenderer(Context context) : base(context) { }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<ZXingBarcodeImageView> e)
 		{
 			base.OnElementChanged(e);
 
@@ -42,9 +42,9 @@ namespace ZXing.Net.Mobile.Forms.Android
 
 				Update();
 			}
-        }
+		}
 
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 

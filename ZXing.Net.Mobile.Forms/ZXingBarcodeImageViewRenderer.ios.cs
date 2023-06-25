@@ -15,12 +15,12 @@ using ZXing.Net.Mobile.Forms.iOS;
 [assembly: ExportRenderer(typeof(ZXingBarcodeImageView), typeof(ZXingBarcodeImageViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.iOS
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class ZXingBarcodeImageViewRenderer : ViewRenderer<ZXingBarcodeImageView, UIImageView>
 	{
 		public static void Init()
 		{
-			var temp = DateTime.Now;
+			var _ = DateTime.Now;
 		}
 
 		ZXingBarcodeImageView FormsView => Element;

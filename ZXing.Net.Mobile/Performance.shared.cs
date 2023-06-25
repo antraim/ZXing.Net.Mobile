@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace ZXing.Mobile
 {
-    public class PerformanceCounter
+	public class PerformanceCounter
 	{
 		public const string TAG = "ZXing.Net.Mobile";
 

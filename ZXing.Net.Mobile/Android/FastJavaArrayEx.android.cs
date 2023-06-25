@@ -5,7 +5,7 @@ using ApxLabs.FastAndroidCamera;
 
 namespace ZXing.Mobile
 {
-    public static class FastJavaArrayEx
+	public static class FastJavaArrayEx
 	{
 		public static void BlockCopyTo(this FastJavaByteArray self, int sourceIndex, byte[] array, int arrayIndex, int length)
 		{

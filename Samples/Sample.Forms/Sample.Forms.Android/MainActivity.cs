@@ -7,7 +7,7 @@ using Xamarin.Essentials;
 
 namespace Sample.Forms.Droid
 {
-    [Activity(Label = "ZXing Forms",
+	[Activity(Label = "ZXing Forms",
 		Icon = "@mipmap/launcher",
 		Theme = "@style/MainTheme",
 		MainLauncher = true,

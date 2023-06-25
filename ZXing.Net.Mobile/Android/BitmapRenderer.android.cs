@@ -21,10 +21,10 @@ using ZXing.Rendering;
 
 namespace ZXing.Mobile
 {
-    /// <summary>
-    /// Renders a <see cref="BitMatrix" /> to a <see cref="Bitmap" /> image
-    /// </summary>
-    public class BitmapRenderer : IBarcodeRenderer<Bitmap>
+	/// <summary>
+	/// Renders a <see cref="BitMatrix" /> to a <see cref="Bitmap" /> image
+	/// </summary>
+	public class BitmapRenderer : IBarcodeRenderer<Bitmap>
 	{
 		/// <summary>
 		/// Gets or sets the foreground color.

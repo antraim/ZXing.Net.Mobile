@@ -1,8 +1,6 @@
-﻿using Xamarin.Forms;
-
-namespace Sample.Forms
+﻿namespace Sample.Forms
 {
-    public partial class App : Application
+	public partial class App : Application
 	{
 		public App()
 		{

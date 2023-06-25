@@ -7,62 +7,62 @@ using ZXing.Mobile;
 
 namespace ZXing.Net.Mobile.Forms
 {
-    public class ZXingScannerView : View
+	public class ZXingScannerView : View
 	{
-        #region BindableProperties
+		#region BindableProperties
 
-        public static readonly BindableProperty OptionsProperty =
-            BindableProperty.Create(nameof(Options), typeof(MobileBarcodeScanningOptions), typeof(ZXingScannerView), MobileBarcodeScanningOptions.Default);
+		public static readonly BindableProperty OptionsProperty =
+			BindableProperty.Create(nameof(Options), typeof(MobileBarcodeScanningOptions), typeof(ZXingScannerView), MobileBarcodeScanningOptions.Default);
 
-        public static readonly BindableProperty IsScanningProperty =
-            BindableProperty.Create(nameof(IsScanning), typeof(bool), typeof(ZXingScannerView), false);
+		public static readonly BindableProperty IsScanningProperty =
+			BindableProperty.Create(nameof(IsScanning), typeof(bool), typeof(ZXingScannerView), false);
 
-        public static readonly BindableProperty IsAnalyzingProperty =
-            BindableProperty.Create(nameof(IsAnalyzing), typeof(bool), typeof(ZXingScannerView), true);
+		public static readonly BindableProperty IsAnalyzingProperty =
+			BindableProperty.Create(nameof(IsAnalyzing), typeof(bool), typeof(ZXingScannerView), true);
 
-        public static readonly BindableProperty ResultProperty =
-            BindableProperty.Create(nameof(Result), typeof(Result), typeof(ZXingScannerView), default(Result));
+		public static readonly BindableProperty ResultProperty =
+			BindableProperty.Create(nameof(Result), typeof(Result), typeof(ZXingScannerView), default(Result));
 
-        public static readonly BindableProperty ScanResultCommandProperty =
-            BindableProperty.Create(nameof(ScanResultCommand), typeof(ICommand), typeof(ZXingScannerView), default(ICommand));
+		public static readonly BindableProperty ScanResultCommandProperty =
+			BindableProperty.Create(nameof(ScanResultCommand), typeof(ICommand), typeof(ZXingScannerView), default(ICommand));
 
-        #endregion
+		#endregion
 
-        #region Properties
+		#region Properties
 
-        public MobileBarcodeScanningOptions Options
-        {
-            get => (MobileBarcodeScanningOptions)GetValue(OptionsProperty);
-            set => SetValue(OptionsProperty, value);
-        }
+		public MobileBarcodeScanningOptions Options
+		{
+			get => (MobileBarcodeScanningOptions)GetValue(OptionsProperty);
+			set => SetValue(OptionsProperty, value);
+		}
 
-        public bool IsScanning
-        {
-            get => (bool)GetValue(IsScanningProperty);
-            set => SetValue(IsScanningProperty, value);
-        }
+		public bool IsScanning
+		{
+			get => (bool)GetValue(IsScanningProperty);
+			set => SetValue(IsScanningProperty, value);
+		}
 
-        public bool IsAnalyzing
-        {
-            get => (bool)GetValue(IsAnalyzingProperty);
-            set => SetValue(IsAnalyzingProperty, value);
-        }
+		public bool IsAnalyzing
+		{
+			get => (bool)GetValue(IsAnalyzingProperty);
+			set => SetValue(IsAnalyzingProperty, value);
+		}
 
-        public Result Result
-        {
-            get => (Result)GetValue(ResultProperty);
-            set => SetValue(ResultProperty, value);
-        }
+		public Result Result
+		{
+			get => (Result)GetValue(ResultProperty);
+			set => SetValue(ResultProperty, value);
+		}
 
-        public ICommand ScanResultCommand
-        {
-            get => (ICommand)GetValue(ScanResultCommandProperty);
-            set => SetValue(ScanResultCommandProperty, value);
-        }
+		public ICommand ScanResultCommand
+		{
+			get => (ICommand)GetValue(ScanResultCommandProperty);
+			set => SetValue(ScanResultCommandProperty, value);
+		}
 
-        #endregion
+		#endregion
 
-        public delegate void ScanResultDelegate(Result result);
+		public delegate void ScanResultDelegate(Result result);
 		public event ScanResultDelegate OnScanResult;
 
 		public event Action<int, int> AutoFocusRequested;

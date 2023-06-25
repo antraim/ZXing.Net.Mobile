@@ -14,9 +14,9 @@ using ZXing.Net.Mobile.Forms.iOS;
 [assembly: ExportRenderer(typeof(ZXingScannerView), typeof(ZXingScannerViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.iOS
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class ZXingScannerViewRenderer : ViewRenderer<ZXingScannerView, ZXing.Mobile.ZXingScannerView>
-	{  
+	{
 		public static void Init()
 		{
 			var _ = DateTime.Now;
@@ -109,7 +109,7 @@ namespace ZXing.Net.Mobile.Forms.iOS
 
 			// Find the best guess at current orientation
 			var orientation = UIApplication.SharedApplication.StatusBarOrientation;
-			
+
 			if (ViewController != null)
 				orientation = ViewController.InterfaceOrientation;
 

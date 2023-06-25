@@ -21,13 +21,13 @@ using static ZXing.Mobile.MobileBarcodeScanningOptions;
 [assembly: ExportRenderer(typeof(ZXingScannerView), typeof(ZXingScannerViewRenderer))]
 namespace ZXing.Net.Mobile.Forms.Android
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class ZXingScannerViewRenderer : ViewRenderer<ZXingScannerView, ZXing.Mobile.ZXingSurfaceView>
-    {
-        public static void Init()
-        {
-            var _ = DateTime.Now;
-        }
+	{
+		public static void Init()
+		{
+			var _ = DateTime.Now;
+		}
 
 		ZXingScannerView FormsView => Element;
 

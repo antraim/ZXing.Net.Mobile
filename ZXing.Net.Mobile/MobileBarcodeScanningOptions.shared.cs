@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ZXing.Mobile
 {
-    public class MobileBarcodeScanningOptions
+	public class MobileBarcodeScanningOptions
 	{
 		public static MobileBarcodeScanningOptions Default => new MobileBarcodeScanningOptions();
 
@@ -44,8 +44,8 @@ namespace ZXing.Mobile
 			DelayBetweenAnalyzingFrames = 150;
 			DelayBetweenContinuousScans = 1000;
 		}
-		
-        public BarcodeReaderGeneric BuildBarcodeReader()
+
+		public BarcodeReaderGeneric BuildBarcodeReader()
 		{
 			var reader = new BarcodeReaderGeneric();
 

@@ -6,7 +6,7 @@ using UIKit;
 
 namespace ZXing.Mobile
 {
-    public class RGBLuminanceSourceiOS : RGBLuminanceSource
+	public class RGBLuminanceSourceiOS : RGBLuminanceSource
 	{
 		public RGBLuminanceSourceiOS(UIImage d)
 			: base((int)d.CGImage.Width, (int)d.CGImage.Height)

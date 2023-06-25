@@ -1,6 +1,6 @@
 ﻿namespace ZXing.Mobile
 {
-    public class CVPixelBufferBGRA32LuminanceSource : BaseLuminanceSource
+	public class CVPixelBufferBGRA32LuminanceSource : BaseLuminanceSource
 	{
 		public unsafe CVPixelBufferBGRA32LuminanceSource(byte* cvPixelByteArray, int cvPixelByteArrayLength, int width, int height)
 			: base(width, height)

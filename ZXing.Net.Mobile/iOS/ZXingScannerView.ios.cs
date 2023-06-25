@@ -22,7 +22,7 @@ using UIKit;
 
 namespace ZXing.Mobile
 {
-    public class ZXingScannerView : UIView, IScannerView, IScannerSessionHost
+	public class ZXingScannerView : UIView, IScannerView, IScannerSessionHost
 	{
 		AVCaptureSession _session;
 		AVCaptureDevice _captureDevice = null;
@@ -449,20 +449,17 @@ namespace ZXing.Mobile
 				return;
 
 			_stopped = false;
-
-			var start = PerformanceCounter.Start();
-
-			ScanningOptions = options ?? MobileBarcodeScanningOptions.Default;
 			_scanResultCallback = scanResultCallback;
 
-			Console.WriteLine("StartScanning");
+			ScanningOptions = options ?? MobileBarcodeScanningOptions.Default;
+
+			var start = PerformanceCounter.Start();
 
 			InvokeOnMainThread(() =>
 			{
 				if (!SetupCaptureSession())
 				{
-					//Setup 'simulated' view:
-					Console.WriteLine("Capture Session FAILED");
+
 				}
 
 				if (Runtime.Arch == Arch.SIMULATOR)
@@ -472,7 +469,6 @@ namespace ZXing.Mobile
 						BackgroundColor = UIColor.LightGray,
 						AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
 					}, 0);
-
 				}
 			});
 
@@ -489,7 +485,7 @@ namespace ZXing.Mobile
 			if (_stopped)
 				return;
 
-			Console.WriteLine("Stopping...");
+			IsAnalyzing = false;
 
 			_outputRecorder?.CancelTokenSource.Cancel();
 

@@ -2,7 +2,7 @@
 
 namespace ZXing.Mobile
 {
-    public interface IScannerView
+	public interface IScannerView
 	{
 		bool IsAnalyzing { get; }
 

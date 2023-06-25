@@ -1,13 +1,10 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-namespace Sample.Forms
+﻿namespace Sample.Forms
 {
-    public partial class ZXingBarcodeImageView : ContentPage
-    {
-        public ZXingBarcodeImageView()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class ZXingBarcodeImageView : ContentPage
+	{
+		public ZXingBarcodeImageView()
+		{
+			InitializeComponent();
+		}
+	}
 }

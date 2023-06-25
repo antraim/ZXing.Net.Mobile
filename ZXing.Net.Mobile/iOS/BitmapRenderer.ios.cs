@@ -7,7 +7,7 @@ using ZXing.Rendering;
 
 namespace ZXing.Mobile
 {
-    public class BitmapRenderer : IBarcodeRenderer<UIImage>
+	public class BitmapRenderer : IBarcodeRenderer<UIImage>
 	{
 		public UIImage Render(BitMatrix matrix, BarcodeFormat format, string content)
 			=> Render(matrix, format, content, new EncodingOptions());
@@ -21,12 +21,12 @@ namespace ZXing.Mobile
 			var black = new CGColor(0f, 0f, 0f);
 			var white = new CGColor(1.0f, 1.0f, 1.0f);
 
-			for (var x = 0; x < matrix.Width; x++)	
+			for (var x = 0; x < matrix.Width; x++)
 				for (var y = 0; y < matrix.Height; y++)
 				{
 					context.SetFillColor(matrix[x, y] ? black : white);
 					context.FillRect(new CGRect(x, y, 1, 1));
-				}	
+				}
 
 			var image = UIGraphics.GetImageFromCurrentImageContext();
 
