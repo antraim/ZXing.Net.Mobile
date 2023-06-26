@@ -43,17 +43,11 @@ namespace ZXing.Mobile
 
 		public bool IsAnalyzing { get; private set; }
 
-		public ZXingScannerView()
-		{
-		}
+		public ZXingScannerView() { }
 
-		public ZXingScannerView(IntPtr handle) : base(handle)
-		{
-		}
+		public ZXingScannerView(IntPtr handle) : base(handle) { }
 
-		public ZXingScannerView(CGRect frame) : base(frame)
-		{
-		}
+		public ZXingScannerView(CGRect frame) : base(frame) { }
 
 		bool SetupCaptureSession()
 		{
@@ -78,9 +72,11 @@ namespace ZXing.Mobile
 
 			// create a device input and attach it to the session
 			var devices = AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video);
+			
 			foreach (var device in devices)
 			{
 				_captureDevice = device;
+
 				if (ScanningOptions.UseFrontCameraIfAvailable.HasValue &&
 					ScanningOptions.UseFrontCameraIfAvailable.Value &&
 					device.Position == AVCaptureDevicePosition.Front)
@@ -89,6 +85,7 @@ namespace ZXing.Mobile
 				else if (device.Position == AVCaptureDevicePosition.Back && (!ScanningOptions.UseFrontCameraIfAvailable.HasValue || !ScanningOptions.UseFrontCameraIfAvailable.Value))
 					break; //Back camera succesfully set
 			}
+			
 			if (_captureDevice == null)
 			{
 				Console.WriteLine("No captureDevice - this won't work on the simulator, try a physical device");
@@ -125,6 +122,7 @@ namespace ZXing.Mobile
 			}
 
 			var input = AVCaptureDeviceInput.FromDevice(_captureDevice);
+
 			if (input == null)
 			{
 				Console.WriteLine("No input - this won't work on the simulator, try a physical device");
@@ -133,7 +131,6 @@ namespace ZXing.Mobile
 			}
 			else
 				_session.AddInput(input);
-
 
 			var start1 = PerformanceCounter.Start();
 
@@ -200,6 +197,7 @@ namespace ZXing.Mobile
 					if (result != null)
 					{
 						_scanResultCallback(result);
+
 						return true;
 					}
 				}
@@ -238,9 +236,7 @@ namespace ZXing.Mobile
 					_captureDeviceOriginalConfig.ExposurePointOfInterest = _captureDevice.ExposurePointOfInterest;
 
 				if (ScanningOptions.DisableAutofocus)
-				{
 					_captureDevice.FocusMode = AVCaptureFocusMode.Locked;
-				}
 				else
 				{
 					if (_captureDevice.IsFocusModeSupported(AVCaptureFocusMode.ContinuousAutoFocus))
@@ -260,9 +256,7 @@ namespace ZXing.Mobile
 					_captureDevice.WhiteBalanceMode = AVCaptureWhiteBalanceMode.AutoWhiteBalance;
 
 				if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0) && _captureDevice.AutoFocusRangeRestrictionSupported)
-				{
 					_captureDevice.AutoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
-				}
 
 				if (_captureDevice.FocusPointOfInterestSupported)
 					_captureDevice.FocusPointOfInterest = new PointF(0.5f, 0.5f);
@@ -361,9 +355,7 @@ namespace ZXing.Mobile
 			volatile bool wasScanned = false;
 
 			[Export("captureOutput:didDropSampleBuffer:fromConnection:")]
-			public override void DidDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
-			{
-			}
+			public override void DidDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection) { }
 
 			public CancellationTokenSource CancelTokenSource = new CancellationTokenSource();
 
@@ -387,6 +379,7 @@ namespace ZXing.Mobile
 						sampleBuffer.Dispose();
 						sampleBuffer = null;
 					}
+
 					return;
 				}
 
@@ -437,7 +430,6 @@ namespace ZXing.Mobile
 				{
 					working = false;
 				}
-
 			}
 		}
 
