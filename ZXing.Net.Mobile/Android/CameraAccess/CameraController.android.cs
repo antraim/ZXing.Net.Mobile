@@ -21,7 +21,7 @@ namespace ZXing.Mobile.CameraAccess
 		readonly ISurfaceHolder _holder;
 		readonly SurfaceView _surfaceView;
 		readonly CameraEventsListener _cameraEventListener;
-		IScannerSessionHost _scannerHost;
+		readonly IScannerSessionHost _scannerHost;
 		int _cameraId;
 
 		public Camera Camera { get; private set; }
@@ -350,8 +350,8 @@ namespace ZXing.Mobile.CameraAccess
 					// Let's give the touched area a 20 x 20 minimum size rect to focus on
 					// So we'll offset -10 from the center of the touch and then 
 					// make a rect of 20 to give an area to focus on based on the center of the touch
-					x = x - 10;
-					y = y - 10;
+					x -= 10;
+					y -= 10;
 
 					// Ensure we don't go over the -1000 to 1000 limit of focus area
 					if (x >= 1000)
